@@ -16,12 +16,16 @@ es mayor a 30, almacenar los primeros 30 que están en la lista e ignore el rest
 
 d.  Ordene,  por  precio,  los  elementos  del  vector  generado  en  c)  utilizando  alguno  de  los  dos  métodos vistos en la teoría.  
 
-e. Muestre los precios del vector resultante del punto d). f. Calcule el promedio de los precios del vector resultante del punto d).}
+e. Muestre los precios del vector resultante del punto d). 
+
+f. Calcule el promedio de los precios del vector resultante del punto d).}
 
 program Actividad4;
 const
     dimF = 8;
     corte = 0;
+    dimF_c = 30;
+
 type
     rango_rubros = 1..dimF;
 
@@ -38,6 +42,9 @@ type
         end;
 
     Vector = Array [rango_rubros] of Lista;
+
+    vector_rubro3 = Array [1..dimF_c] of producto;
+
 
 procedure GenerarEstructura (var v:Vector);
 
@@ -104,9 +111,80 @@ procedure InformarCodigos(v:Vector);
             end;
     end;
 
+procedure ProductosRubro3(L:Lista; var dimL:integer; var v:vector_rubro3);
+    begin
+        while (dimL<dimF) and (L<>nil) do
+            begin
+                dimL:= dimL + 1;
+                v[dimL]:= L^.dato;
+                L:= L^.sig;
+            end;
+    end;
+
+procedure OrdenarVectorINSERCION (var v:vector_rubro3; dimL:integer);
+    var 
+        i,j: integer;
+        actual: producto;
+    begin
+        for i:= 2 to dimL do
+            begin
+                actual:= v[i];
+                j:= i-1; 
+                while(j>0) and (v[j].precio > actual.precio) do
+                    begin
+                        v[j+1]:= v[j];
+                        j:= j -1;
+                    end;
+                v[j+1]:= actual;
+            end;
+    end;
+
+procedure OrdenarVectorSELECCION (var v:vector_rubro3; dimL: integer);
+    var
+        i,j,pos:integer;
+        item: producto;
+    begin
+        for i:= 1 to dimL-1 do
+            begin
+                pos:= i;
+                for j:= i+1 to dimL do
+                    if (v[j].precio < v[pos].precio) then
+                        pos:=j;
+                item:= v[pos];
+                v[pos]:= v[i];
+                v[i]:= item;
+            end;
+    end;
+
+procedure InformarVector (v:vector_rubro3; dimL:integer);
+    var 
+        x:integer;
+    begin
+        for x:= 1 to dimL do 
+            begin
+                writeln('| --- PRODUCTO ', x,'---|'); writeln;
+                Writeln('| Codigo: ', v[x].codigo,'       |');
+                writeln('| Precio: ', v[x].precio:6:2,' |');writeln;
+
+            end;
+    end;
+
+function CalcularPromedio(v:vector_rubro3; dimL:integer):real;
+    var 
+        x:integer;
+        suma:real;
+    begin
+        suma:=0;
+        for x:= 1 to dimL do
+            suma:= suma + v[x].precio;
+        CalcularPromedio := suma / dimL;
+    end;
+
+
 var
-    x: integer;
+    x, dimL: integer;
     v: Vector;
+    vr: vector_rubro3;
 begin
     randomize;
     for x:= 1 to dimF do 
@@ -117,4 +195,18 @@ begin
 
 // Inciso B
     InformarCodigos(v);
+
+// Inciso C
+    dimL:=0;
+    ProductosRubro3(v[3],dimL,vr);
+
+// Inciso D
+    //OrdenarVectorINSERCION(vr,dimL);
+    OrdenarVectorSELECCION(vr,dimL);
+
+// Inciso E
+    InformarVector(vr,dimL);
+
+// Inciso F
+    writeln('Promedio de los precios del vector con productos del rubro 3: ', CalcularPromedio(vr,dimL):6:2);
 end.
