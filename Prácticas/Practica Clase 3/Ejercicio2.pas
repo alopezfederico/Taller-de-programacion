@@ -206,6 +206,19 @@ procedure GenerarEstructura(var a_i:arbol_i; var a_ii: arbol_ii; var a_iii: arbo
         writeln();writeln('////////////////////////////////////////////////'); writeln();
     end;
 
+function CantidadEnFecha(a:a_ii; f:fecha_):integer;
+    begin
+        if (a=nil) then
+            CantidadEnFecha:=0
+        else
+            begin
+                if (a^.dato.fecha.dia = f.dia) and (a^.dato.fecha.mes = f.mes) and (a^.dato.fecha.anio = f.anio) then
+                    CantidadEnFecha:=  cant + CantidadEnFecha(a^.HI) + CantidadEnFecha(a^.HD);
+                CantidadEnFecha:= CantidadEnFecha(a^.HI) + CantidadEnFecha(a^.HD);
+            end;
+    end;
+ {b. Implemente un módulo que reciba el árbol generado en i. y una fecha y retorne la cantidad
+ total de productos vendidos en la fecha recibida}
 
 var 
     a_i:   arbol_i;
@@ -213,5 +226,6 @@ var
     a_iii: arbol_iii;
 begin
     GenerarEstructura(a_i,a_ii,a_iii);
-    
+    write
+
 end.
