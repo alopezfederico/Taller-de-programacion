@@ -13,7 +13,7 @@ b. Una vez generado el arbol, realice modulos independientes que reciban el arbo
  |  iv. Aumentar en 1 la edad de los socios con edad impar e informar la cantidad de socios que se les aumento la edad.
  |  vi. Leer un nombre e informar si existe o no existe un socio con ese nombre. Debe invocar a un módulo recursivo que reciba el nombre leído y retorne verdadero o falso.
  |  vii. Informar la cantidad de socios. Debe invocar a un módulo recursivo que retorne dicha cantidad.
-    viii. Informar el promedio de edad de los socios. Debe invocar a un módulo recursivo que retorne el promedio de las edades de los socios.
+ |  viii. Informar el promedio de edad de los socios. Debe invocar a un módulo recursivo que retorne el promedio de las edades de los socios.
 
 }
 
