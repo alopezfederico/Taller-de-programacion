@@ -97,7 +97,7 @@ procedure GenerarEstructura(var a_i:arbol_i; var a_ii: arbol_ii; var a_iii: arbo
                     write('Ingrese Dia: '); venta.fecha.dia:= random(31)+1; writeln(venta.fecha.dia);
                     write('Ingrese Mes: '); venta.fecha.mes:= random(12)+1; writeln(venta.fecha.mes);
                     write('Ingrese Anio: '); venta.fecha.anio:= random(12)+1; writeln(venta.fecha.anio);
-                    write('Ingrese cantidad de unidades vendidos: '); venta.cant:= random(10000); writeln(venta.cant);
+                    write('Ingrese cantidad de unidades vendidos: '); venta.cant:= random(1000); writeln(venta.cant);
                 end;
         end;
 
@@ -206,15 +206,19 @@ procedure GenerarEstructura(var a_i:arbol_i; var a_ii: arbol_ii; var a_iii: arbo
         writeln();writeln('////////////////////////////////////////////////'); writeln();
     end;
 
-function CantidadEnFecha(a:a_ii; f:fecha_):integer;
+function CantidadEnFecha(a:arbol_i; f:fecha_):integer;
+    var
+        suma:integer;
     begin
         if (a=nil) then
             CantidadEnFecha:=0
         else
             begin
                 if (a^.dato.fecha.dia = f.dia) and (a^.dato.fecha.mes = f.mes) and (a^.dato.fecha.anio = f.anio) then
-                    CantidadEnFecha:=  cant + CantidadEnFecha(a^.HI) + CantidadEnFecha(a^.HD);
-                CantidadEnFecha:= CantidadEnFecha(a^.HI) + CantidadEnFecha(a^.HD);
+                   suma:= a^.dato.cant
+                else 
+                    suma:= 0;
+                CantidadEnFecha:= suma + CantidadEnFecha(a^.HI,f) + CantidadEnFecha(a^.HD,f);
             end;
     end;
  {b. Implemente un módulo que reciba el árbol generado en i. y una fecha y retorne la cantidad
@@ -224,8 +228,15 @@ var
     a_i:   arbol_i;
     a_ii:  arbol_ii;
     a_iii: arbol_iii;
+    fecha:fecha_;
 begin
+    randomize;
     GenerarEstructura(a_i,a_ii,a_iii);
-    write
-
+    writeln('/////////////////////');
+    writeln('Ingrese Fecha a buscar');
+    write('Dia: ');readln(fecha.dia);
+    write('Mes: ');readln(fecha.mes);
+    write('Anio: ');readln(fecha.anio);
+    writeln();writeln('//////////////////');
+    writeln('Cantidad de productos vendidos en la fecha ingresada: ', CantidadEnFecha(a_i,fecha));
 end.
