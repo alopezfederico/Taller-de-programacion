@@ -16,3 +16,23 @@ en el vector.
 }
 
 program Ejercicio3;
+const 
+    r_min = 300;
+    r_max = 1550;
+
+    dimF = 20;
+
+type 
+    vector = Array [1 .. dimF] of integer;
+
+
+procedure CargarVector( var V:vector; var dimL:integer);
+    var
+        num:integer;
+    begin
+       if (dimL<dimF) then
+            begin
+                num:= random(r_max-r_min +1) + r_min;
+
+                V[dimL]
+    end;
