@@ -80,7 +80,7 @@ procedure ImprimirLista(L:Lista);
     end;
 }
 
-procedure ImprimirListaInvertida(L:Lista);         // Metodo 2 re capo el zeke
+procedure ImprimirListaInvertida(L:Lista);         // Metodo 2 
     begin
         if (L<>nil) then
             begin
@@ -94,8 +94,8 @@ procedure ImprimirListaInvertida(L:Lista);         // Metodo 2 re capo el zeke
     begin
         if (L<>nil) then
             begin
-                MinimoValor:= MinimoValor(L^.sig);
-                if (L^.sig = nil) then
+                MinimoValor:= MinimoValor(L^.sig); //"No recomendable "
+                if (L^.sig = nil) then // "No recomendable referenciar tanto al siguiente en las condiciones"
                     MinimoValor:=999;
                 if (L^.dato < MinimoValor) then
                     MinimoValor:= L^.dato;
@@ -104,7 +104,7 @@ procedure ImprimirListaInvertida(L:Lista);         // Metodo 2 re capo el zeke
 }
 
 
-function MinimoValor(L:Lista): integer;             // Metodo 2 RE capo el zeke
+function MinimoValor(L:Lista): integer;             // Metodo 2 
     begin
         if (L=nil) then
             MinimoValor:=999
