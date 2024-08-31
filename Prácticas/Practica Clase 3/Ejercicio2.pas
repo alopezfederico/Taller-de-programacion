@@ -90,14 +90,14 @@ procedure GenerarEstructura(var a_i:arbol_i; var a_ii: arbol_ii; var a_iii: arbo
     procedure CargarVenta(var venta:venta_i);
         begin
             writeln('---------------------------');
-            write('Ingrese codio de producto: '); venta.codigo:= random(10000); writeln(venta.codigo);
+            write('Ingrese codio de producto: '); venta.codigo:= random(100); writeln(venta.codigo);
             if (venta.codigo<>0) then
                 begin
                     writeln('--Fecha--');
                     write('Ingrese Dia: '); venta.fecha.dia:= random(31)+1; writeln(venta.fecha.dia);
                     write('Ingrese Mes: '); venta.fecha.mes:= random(12)+1; writeln(venta.fecha.mes);
                     write('Ingrese Anio: '); venta.fecha.anio:= random(12)+1; writeln(venta.fecha.anio);
-                    write('Ingrese cantidad de unidades vendidos: '); venta.cant:= random(1000); writeln(venta.cant);
+                    write('Ingrese cantidad de unidades vendidos: '); venta.cant:= random(100); writeln(venta.cant);
                 end;
         end;
 
@@ -207,6 +207,8 @@ procedure GenerarEstructura(var a_i:arbol_i; var a_ii: arbol_ii; var a_iii: arbo
     end;
 
 function CantidadEnFecha(a:arbol_i; f:fecha_):integer;
+  {b. Implemente un módulo que reciba el árbol generado en i. y una fecha y retorne la cantidad
+  total de productos vendidos en la fecha recibida}
     var
         suma:integer;
     begin
@@ -221,14 +223,59 @@ function CantidadEnFecha(a:arbol_i; f:fecha_):integer;
                 CantidadEnFecha:= suma + CantidadEnFecha(a^.HI,f) + CantidadEnFecha(a^.HD,f);
             end;
     end;
- {b. Implemente un módulo que reciba el árbol generado en i. y una fecha y retorne la cantidad
- total de productos vendidos en la fecha recibida}
+
+procedure MayorCant(a:arbol_ii; var codigo:integer; var max:integer);
+ {c. Implemente un módulo que reciba el árbol generado en ii. y retorne el código de producto
+ con mayor cantidad total de unidades vendidas.}
+    begin
+        if (a<>nil) then
+            begin
+                if (a^.dato.cant > max) then
+                    begin
+                        max:= a^.dato.cant;
+                        codigo:= a^.dato.codigo;
+                    end;
+                MayorCant(a^.HI,codigo,max);
+                MayorCant(a^.HD,codigo,max);
+            end;
+    end;
+
+procedure ContarCantidadVentas(a: arbol_iii; var codigo:integer; var max: integer);
+ {Implemente un módulo que reciba el árbol generado en iii. y retorne el código de producto
+ con mayor cantidad de ventas.}
+
+    procedure RecorrerLista(L:L_; var contador:integer);
+        begin
+            contador:=0;
+            while (L<>nil) do
+                begin
+                    contador:=contador +1;
+                    L:=L^.sig;
+                end;
+        end;
+    var
+        contador:integer;
+    begin
+        if(a<>nil)then
+            begin
+                RecorrerLista(a^.dato.L,contador);
+                if (contador>max) then
+                    begin
+                        codigo:=a^.dato.codigo;
+                        max:=contador;
+                    end;
+                ContarCantidadVentas(a^.HI,codigo,max);
+                ContarCantidadVentas(a^.HD,codigo,max);
+            end;
+    end;
 
 var 
     a_i:   arbol_i;
     a_ii:  arbol_ii;
     a_iii: arbol_iii;
     fecha:fecha_;
+    codigo:integer;
+    cant:integer;
 begin
     randomize;
     GenerarEstructura(a_i,a_ii,a_iii);
@@ -239,4 +286,14 @@ begin
     write('Anio: ');readln(fecha.anio);
     writeln();writeln('//////////////////');
     writeln('Cantidad de productos vendidos en la fecha ingresada: ', CantidadEnFecha(a_i,fecha));
+    writeln();writeln('//////////////////');
+
+    cant:=-1;
+    MayorCant(a_ii,codigo,cant);
+    writeln('Codigo del producto con mas cantidad vendida: ',codigo);
+
+    writeln('///////////////////////');
+    cant:=-1;
+    ContarCantidadVentas(a_iii,codigo,cant);
+    writeln('Codigo con mayor cantidad de ventas: ', codigo);
 end.
