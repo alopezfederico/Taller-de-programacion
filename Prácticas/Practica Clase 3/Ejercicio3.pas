@@ -219,6 +219,6 @@ begin
     InformarAlumnos(a);
 
 //--- Inciso D
-    num:= 7;
+    write('Ingrese numero para comparar promedio: '); readln(num);
     InformarPromedios(a,num);
 end.
