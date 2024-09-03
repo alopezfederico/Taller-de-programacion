@@ -18,6 +18,7 @@ d. Un módulo recursivo que reciba la estructura generada en i. y un número de 
 módulo debe retornar la cantidad de préstamos realizados a dicho socio.
 e. Un módulo recursivo que reciba la estructura generada en ii. y un número de socio. El
 módulo debe retornar la cantidad de préstamos realizados a dicho socio.
+
 f. Un módulo que reciba la estructura generada en i. y retorne una nueva estructura
 ordenada ISBN, donde cada ISBN aparezca una vez junto a la cantidad total de veces
 que se prestó.
@@ -86,13 +87,29 @@ type
         HD:arbol_ii;
         end;
 
+// Arbol_f
+    reg_f = record
+        isbn:integer;
+        cant:integer;
+        end;
+
+    arbol_f = ^Nodo_f;
+    Nodo_f = record 
+        dato:reg_f;
+        HI:arbol_f;
+        HD:arbol_f;
+        end;
+
+// Arbol_g
+    // Para la estructura a generar del inciso G, puedo reutilizar la estructura del Arbol_f
+
 
 // INCISO A
  procedure GenerarEstructuras(var a_i:arbol_i; var a_ii: arbol_ii);
 
     procedure LeerPrestamo(var p:prestamo);
         begin
-            write('Ingrese ISBN del libro: '); p.isbn:= random(1000); writeln(p.isbn);
+            write('Ingrese ISBN del libro: '); p.isbn:= random(100); writeln(p.isbn);
             if (p.isbn <> corte) then
                 begin
                   write('Ingrese numero de socio: '); p.num_socio:= random(100); writeln(p.num_socio);
@@ -246,10 +263,8 @@ type
 
 
 // INCISO E
-    {e. Un módulo recursivo que reciba la estructura generada en ii. y un número de socio. El
-    módulo debe retornar la cantidad de préstamos realizados a dicho socio.}
 
-procedure InformarE(a:arbol_ii);
+ procedure InformarE(a:arbol_ii);
 
     function Prestamos_usuario_lista(L:Lista; num:integer):integer;
         begin
@@ -282,22 +297,134 @@ procedure InformarE(a:arbol_ii);
     end;
 
 
-{f. Un módulo que reciba la estructura generada en i. y retorne una nueva estructura
-ordenada ISBN, donde cada ISBN aparezca una vez junto a la cantidad total de veces
-que se prestó.
-g. Un módulo que reciba la estructura generada en ii. y retorne una nueva estructura
-ordenada ISBN, donde cada ISBN aparezca una vez junto a la cantidad total de veces
-que se prestó.
-h. Un módulo recursivo que reciba la estructura generada en g. y muestre su contenido.
+// INCISO F
+
+ procedure InformarF (a_i:arbol_i; var a_f:arbol_f);
+
+    procedure Generar_Estru_F(var a:arbol_f; p:prestamo);
+        begin
+            if (a=nil) then
+                begin
+                    New(a);
+                    a^.dato.isbn:= p.isbn;
+                    a^.dato.cant:= 1;
+                    a^.HI:=nil;
+                    a^.HD:=nil;
+                end
+            else
+                if (a^.dato.isbn>p.isbn) then
+                    Generar_Estru_F(a^.HI,p)
+                else
+                    if (a^.dato.isbn<p.isbn) then
+                        Generar_Estru_F(a^.HD,p)
+                    else
+                        a^.dato.cant:= a^.dato.cant + 1;
+        end;
+
+    procedure RecorrerArbol(a_i:arbol_i; var a_f:arbol_f);
+        begin
+            if (a_i<>nil) then
+                begin
+                    RecorrerArbol(a_i^.HI,a_f);
+                    Generar_Estru_F(a_f, a_i^.dato);
+                    RecorrerArbol(a_i^.HD,a_f);
+                end;
+        end;
+
+    procedure ImprimirEstructuraF(a:arbol_f);
+        begin
+            if (a<>nil) then
+                begin
+                    ImprimirEstructuraF(a^.HI);
+                    writeln('ISBN: ',a^.dato.isbn,' | Cantidad de prestamos realizados: ', a^.dato.cant);
+                    writeln('_____________________________________________________________________|');
+                    ImprimirEstructuraF(a^.HD);
+                end;
+        end;
+
+    begin
+        RecorrerArbol(a_i,a_f);
+        writeln();
+        writeln();
+        writeln('/////////// Estructura realizada en INCISO F ///////////');
+        ImprimirEstructuraF(a_f);
+    end;
+
+
+// INCISO G
+
+ {g. Un módulo que reciba la estructura generada en ii. y retorne una nueva estructura
+ ordenada ISBN, donde cada ISBN aparezca una vez junto a la cantidad total de veces
+ que se prestó.}  
+    
+ procedure InformarG(a_ii:arbol_ii; var a_g:arbol_f);
+
+    function ContarPrestamosEnLista(L:Lista):integer;
+        begin
+            if (L=Nil) then
+                ContarPrestamosEnLista:=0
+            else
+                ContarPrestamosEnLista:= 1 + ContarPrestamosEnLista(L^.sig);
+        end;
+
+    procedure Generar_Estru_G(var a:arbol_f; reg:reg_arbol_ii);
+        begin
+            if (a=nil) then
+                begin
+                    New(a);
+                    a^.dato.isbn:=reg.isbn;
+                    a^.dato.cant:=ContarPrestamosEnLista(reg.L);
+                    a^.HI:=nil;
+                    a^.HD:=nil;
+                end
+            else
+                if (a^.dato.isbn>reg.isbn) then
+                    Generar_Estru_G(a^.HI,reg)
+                else
+                    Generar_Estru_G(a^.HD,reg);
+        end;
+
+    procedure RecorrerAbol_G (a_ii:arbol_ii;var a_g:arbol_f);
+        begin
+            if (a_ii<>nil) then
+                begin
+                    RecorrerAbol_G(a_ii^.HI,a_g);
+                    Generar_Estru_G(a_g,a_ii^.dato);
+                    RecorrerAbol_G(a_ii^.HD,a_g);
+                end;
+        end;
+    procedure ImprimirEstructuraG(a:arbol_f);
+        begin
+            if (a<>nil) then
+                begin
+                    ImprimirEstructuraG(a^.HI);
+                    writeln('ISBN: ',a^.dato.isbn,' | Cantidad de prestamos realizados: ', a^.dato.cant);
+                    writeln('_____________________________________________________________________|');
+                    ImprimirEstructuraG(a^.HD);
+                end;
+        end;
+
+    begin
+        RecorrerAbol_G(a_ii,a_g);
+        writeln();
+        writeln();
+        writeln('/////////// Estructura realizada en INCISO G ///////////');
+        ImprimirEstructuraG(a_g);
+    end;
+
+{h. Un módulo recursivo que reciba la estructura generada en g. y muestre su contenido.
+
 i. Un módulo recursivo que reciba la estructura generada en i. y dos valores de ISBN. El
 módulo debe retornar la cantidad total de préstamos realizados a los ISBN
 comprendidos entre los dos valores recibidos (incluidos).
+
 j. Un módulo recursivo que reciba la estructura generada en ii. y dos valores de ISBN. El
 módulo debe retornar la cantidad total de préstamos realizados a los ISBN
 comprendidos entre los dos valores recibidos (incluidos).}
 var 
     a_i:arbol_i;
     a_ii: arbol_ii;
+    a_g,a_f: arbol_f;
 begin
     randomize;
 // --- Inciso A
@@ -314,4 +441,10 @@ begin
 
 // --- Inciso E
     InformarE(a_ii);
+
+// --- Inciso F
+    InformarF(a_i,a_f);
+
+// --- Inciso G
+    InformarG(a_ii,a_g);
 end.
