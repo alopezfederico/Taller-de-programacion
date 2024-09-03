@@ -253,8 +253,7 @@ type
     begin
         writeln();
         writeln();
-        writeln('|||||||||| Usando Arbol_ii ||||||||||||');
-        writeln();
+        writeln('|||||||||| Usando Arbol_i ||||||||||||');
         writeln('---------------------------------------');
         write('Ingrese un numero de socio: '); readln(num); 
         writeln('......................................');  
@@ -411,28 +410,26 @@ type
 
 // INCISO I
 
-procedure InformarI(a:arbol_i);
-{i. Un módulo recursivo que reciba la estructura generada en i. y dos valores de ISBN. El
-módulo debe retornar la cantidad total de préstamos realizados a los ISBN
-comprendidos entre los dos valores recibidos (incluidos).}
-    function TotalEntreDosValores(a:arbol_i; n1,n2:integer):integer;
+ procedure InformarI(a:arbol_i);
+
+    function TotalEntreDosValores_I(a:arbol_i; n1,n2:integer):integer;
         begin
             if(a=nil)then
-                TotalEntreDosValores:=0
+                TotalEntreDosValores_I:=0
             else
                 if (a^.dato.isbn = n1) then
-                    TotalEntreDosValores:= 1 + TotalEntreDosValores(a^.HD,n1,n2)
+                    TotalEntreDosValores_I:= 1 + TotalEntreDosValores_I(a^.HD,n1,n2)
                 else
                     if(a^.dato.isbn = n2) then
-                        TotalEntreDosValores:= 1 + TotalEntreDosValores(a^.HI,n1,n2)
+                        TotalEntreDosValores_I:= 1 + TotalEntreDosValores_I(a^.HI,n1,n2)
                     else
                         if not (a^.dato.isbn > n1) then
-                            TotalEntreDosValores:= TotalEntreDosValores(a^.HD,n1,n2)
+                            TotalEntreDosValores_I:= TotalEntreDosValores_I(a^.HD,n1,n2)
                         else 
                             if not (a^.dato.isbn < n2) then
-                                TotalEntreDosValores:= TotalEntreDosValores(a^.HI,n1,n2)
+                                TotalEntreDosValores_I:= TotalEntreDosValores_I(a^.HI,n1,n2)
                         else
-                            TotalEntreDosValores:= 1 + TotalEntreDosValores(a^.HI,n1,n2) + TotalEntreDosValores(a^.HD,n1,n2);
+                            TotalEntreDosValores_I:= 1 + TotalEntreDosValores_I(a^.HI,n1,n2) + TotalEntreDosValores_I(a^.HD,n1,n2);
         end;
 
     var
@@ -445,17 +442,57 @@ comprendidos entre los dos valores recibidos (incluidos).}
         write('Numero 2: '); readln(n2);
         writeln('----- CANTIDAD DE VALORES ENTRE -----');
         writeln(n1,'...............................',n2);
-        writeln('                 ',TotalEntreDosValores(a,n1,n2),'                 ');
+        writeln('                 ',TotalEntreDosValores_I(a,n1,n2),'                 ');
+    end;
+
+// INCISO J
+ procedure InformarJ(a:arbol_ii);
+ {j. Un módulo recursivo que reciba la estructura generada en ii. y dos valores de ISBN. El
+ módulo debe retornar la cantidad total de préstamos realizados a los ISBN
+ comprendidos entre los dos valores recibidos (incluidos).}
+
+    function ContarEnLista_J(L:Lista):integer;
+        begin
+            if(L=nil)then
+              ContarEnLista_J:=0
+            else
+                ContarEnLista_J:= 1 + ContarEnLista_J(L^.sig);
+        end;
+
+    function TotalEntreDosValores_J(a:arbol_ii; n1,n2:integer):integer;
+        begin
+            if(a=nil)then
+                TotalEntreDosValores_J:=0
+            else
+                if (a^.dato.isbn=n1) then
+                    TotalEntreDosValores_J:= ContarEnLista_J(a^.dato.L) + TotalEntreDosValores_J(a^.HD,n1,n2)
+                else 
+                    if (a^.dato.isbn=n2) then
+                        TotalEntreDosValores_J:= ContarEnLista_J(a^.dato.L) + TotalEntreDosValores_J(a^.HI,n1,n2)
+                    else
+                        if not (a^.dato.isbn > n1) then
+                            TotalEntreDosValores_J:= TotalEntreDosValores_J(a^.HD,n1,n2)
+                        else
+                            if not (a^.dato.isbn < n2) then
+                                TotalEntreDosValores_J:= TotalEntreDosValores_J(a^.HI,n1,n2)
+                            else
+                                TotalEntreDosValores_J:= ContarEnLista_J(a^.dato.L) + TotalEntreDosValores_J(a^.HI,n1,n2)+ TotalEntreDosValores_J(a^.HD,n1,n2);
+        end;
+
+    var 
+        n1,n2:integer;
+    begin
+        writeln();
+        writeln();
+        writeln('---------Ingrese dos numeros---------');
+        write('Numero 1: '); readln(n1);
+        write('Numero 2: '); readln(n2);
+        writeln('----- CANTIDAD DE VALORES ENTRE -----');
+        writeln(n1,'...............................',n2);
+        writeln('                 ',TotalEntreDosValores_J(a,n1,n2),'                 ');
     end;
 
 
-
-
-
-
-{j. Un módulo recursivo que reciba la estructura generada en ii. y dos valores de ISBN. El
-módulo debe retornar la cantidad total de préstamos realizados a los ISBN
-comprendidos entre los dos valores recibidos (incluidos).}
 var 
     a_i:arbol_i;
     a_ii: arbol_ii;
@@ -463,26 +500,34 @@ var
 begin
     randomize;
 // --- Inciso A
-    GenerarEstructuras(a_i,a_ii);
+    GenerarEstructuras(a_i,a_ii);readln();
 
 // --- Inciso B
-    InformarB(a_i);
+    InformarB(a_i);readln();
 
 // --- Inciso C
-    InformarC(a_ii);
+    InformarC(a_ii);readln();
 
 // --- Inciso D
-    InformarD(a_i);
+    InformarD(a_i);readln();
 
 // --- Inciso E
-    InformarE(a_ii);
+    InformarE(a_ii);readln();
 
 // --- Inciso F
-    InformarF(a_i,a_f);
+    InformarF(a_i,a_f);readln();
 
 // --- Inciso G
-    InformarG(a_ii,a_g);
+    InformarG(a_ii,a_g);readln();
 
 // --- Inciso I
-    InformarI(a_i);
+    InformarI(a_i);readln();
+
+// --- Inciso J
+    InformarJ(a_ii);
+    writeln('Presione enter para finalizar');
+    readln();
+    writeln('////////////////////////////');
+    writeln('////Prorgama  finalizado////');
+    writeln('////////////////////////////');
 end.
