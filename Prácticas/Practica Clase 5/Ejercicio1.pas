@@ -134,6 +134,67 @@ type
             Ordenar_Vector_SELECCION(v,dimL);
     end;
 
+// INCISO C
+ {c) Un módulo que realice una búsqueda dicotómica. Este módulo debe recibir el vector
+ generado en b) y un código de identificación de oficina. En el caso de encontrarlo, debe
+ retornar la posición del vector donde se encuentra y en caso contrario debe retornar 0.
+ Luego el programa debe informar el DNI del propietario o un cartel indicando que no
+ se encontró la oficina.}
+
+ procedure InformarC(v:vector; dimL:integer);
+
+    function busquedaDicotomica(v:vector; ini,medio,fin,codigo:integer):integer;
+        begin
+            while (v[medio].codigo < codigo) and (ini<=fin) do
+                begin
+                    if (codigo < v[medio].codigo) then
+                        fin:= medio - 1
+                    else 
+                        ini:= medio + 1;
+                    medio:= ((fin-ini) div 2) + ini;
+                end;
+            if (v[medio].codigo=codigo) then
+                busquedaDicotomica:= medio
+            else 
+                busquedaDicotomica:=0;
+        end;
+
+    var 
+        codigo:integer;
+        ini,fin,medio:integer;
+    begin
+        ini:=1;
+        fin:=dimL;
+        medio:= fin div 2;
+        writeln('-------BUSQUEDA DICOTOMICA-------');
+        Writeln('Ingrese numero a buscar: ');readln(codigo);
+        if (busquedaDicotomica(v,ini,medio,fin,codigo) = 0) then
+            writeln('El codigo de oficina no se encontro')
+        else
+            writeln('DNI Del propietario: ',v[busquedaDicotomica(v,ini,medio,fin,codigo)].dni);
+    end;
+
+// INCISO D
+
+ procedure InformarD(v:vector; dimL:integer);
+
+    function Sumar_Expensas(v:vector; dimL:integer; x:integer):real;
+        begin
+            if (dimL=x) then
+                Sumar_Expensas:= v[x].expensa
+            else
+                Sumar_Expensas:= v[x].expensa + Sumar_Expensas(v,dimL,x+1);
+        end;
+    var 
+        x:integer;
+    begin
+        writeln('_____________________');
+        writeln('El monto total de las expensas de todas las oficinas es: ');
+        x:=1;
+        writeln('.............$',Sumar_Expensas(v,dimL,x):7:2);
+    end;
+
+
 procedure ImprimirVector(v:vector; dimL:integer);
     var 
         x:integer;
@@ -159,4 +220,10 @@ begin
 //--- Inciso B
     InformarB(v,dimL);
     ImprimirVector(v,dimL);
+
+//--- Inciso C
+    InformarC(v,dimL);
+
+//--- Inciso D
+    InformarD(v,dimL);
 end.
