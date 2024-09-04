@@ -134,6 +134,37 @@ type
             Ordenar_Vector_SELECCION(v,dimL);
     end;
 
+// INCISO C
+ procedure InformarC(v:vector; dimL:integer);
+    {c) Un módulo que realice una búsqueda dicotómica. Este módulo debe recibir el vector
+ generado en b) y un código de identificación de oficina. En el caso de encontrarlo, debe
+ retornar la posición del vector donde se encuentra y en caso contrario debe retornar 0.
+ Luego el programa debe informar el DNI del propietario o un cartel indicando que no
+ se encontró la oficina.}
+    
+    function Buscar_en_vector(v:vector; var medio,ini,fin:integer; cod:integer);
+        var
+        begin
+            if (dimL>dimF) then
+                Buscar_en_vector:=0
+            else
+                
+
+        end;
+
+
+    var 
+        cod:integer;
+    begin
+        writeln('-------INCISO B--------');
+        Writeln('Ingrese codigo de identificacion de oficina: '); readln(cod);
+        writeln('\\\\\ Buscando codigo de identificacion en el vector /////');
+        if (Buscar_en_vector(v,dimL,cod)=0) then
+            writeln('La oficina con codigo "',cod,'" NO EXISTE')
+            else 
+                writeln('La oficina se encuentra en la posicion: ', Buscar_en_vector(v,dimL,cod));
+    end;
+
 procedure ImprimirVector(v:vector; dimL:integer);
     var 
         x:integer;
@@ -149,6 +180,8 @@ procedure ImprimirVector(v:vector; dimL:integer);
             end;
     end;
 
+
+
 var 
     v:vector;
     dimL:integer;
@@ -159,4 +192,7 @@ begin
 //--- Inciso B
     InformarB(v,dimL);
     ImprimirVector(v,dimL);
+//--- Inciso C
+
+
 end.
