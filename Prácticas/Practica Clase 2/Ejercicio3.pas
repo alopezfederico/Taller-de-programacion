@@ -17,28 +17,6 @@ en el vector.
 }
 
 program Ejercicio3;
-<<<<<<< HEAD
-const 
-    r_min = 300;
-    r_max = 1550;
-
-    dimF = 20;
-
-type 
-    vector = Array [1 .. dimF] of integer;
-
-
-procedure CargarVector( var V:vector; var dimL:integer);
-    var
-        num:integer;
-    begin
-       if (dimL<dimF) then
-            begin
-                num:= random(r_max-r_min +1) + r_min;
-
-                V[dimL]
-    end;
-=======
 const
     r_min = 300;
     r_max = 1550;
@@ -153,4 +131,3 @@ begin
     else
         writeln('El numero no se encuentra en la lista');
 end.
->>>>>>> 8685c3e6cd1e227adafca59794d653c385e1a259

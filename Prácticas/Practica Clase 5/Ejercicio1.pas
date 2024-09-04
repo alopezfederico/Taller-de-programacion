@@ -10,9 +10,11 @@ valor de la expensa.
 
 La lectura finaliza cuando llega el código de
 identificación 0.
+
 b) Un módulo que reciba el vector retornado en a) y retorne dicho vector ordenado por
 código de identificación de la oficina. Ordenar el vector aplicando uno de los métodos
 vistos en la cursada.
+
 c) Un módulo que realice una búsqueda dicotómica. Este módulo debe recibir el vector
 generado en b) y un código de identificación de oficina. En el caso de encontrarlo, debe
 retornar la posición del vector donde se encuentra y en caso contrario debe retornar 0.
@@ -34,17 +36,18 @@ type
 
     vector = Array[1..dimF] of oficina;
 
-procedure GenerarEstructura(var v:vector);
+// INCISO A
+ procedure GenerarEstructura(var v:vector; var dimL:integer);
 
     procedure InicializarVector(var v:vector);
         var
-            dimL:integer;
+            x:integer;
         begin
-            for dimL:= 1 to dimF do
+            for x:= 1 to dimF do
                 begin
-                    v[dimL].codigo:=-1;
-                    v[dimL].dni:=-1;
-                    v[dimL].expensa:=-1;
+                    v[x].codigo:=-1;
+                    v[x].dni:=-1;
+                    v[x].expensa:=-1;
                 end;
         end;
     procedure LeerOficina(var o:oficina);
@@ -60,7 +63,6 @@ procedure GenerarEstructura(var v:vector);
 
     var 
         o:oficina;
-        dimL:integer;
     begin
         InicializarVector(v);
         LeerOficina(o);
@@ -73,9 +75,88 @@ procedure GenerarEstructura(var v:vector);
             end;
     end;
 
+// INCISO B
+ procedure InformarB(var v:vector; dimL:integer);
+
+    procedure Ordenar_Vector_INSERCION(var v:vector; dimL:integer);
+        var 
+            i,j:integer;
+            actual:oficina;
+        begin
+            for i:= 2 to dimL do
+                begin
+                    actual:= v[i];
+                    j:= i-1;
+                    while (j>0) and (v[j].codigo>actual.codigo) do
+                        begin
+                            v[j+1]:=v[j];
+                            j:=j-1;
+                        end;
+                    v[j+1]:=actual;
+                end;
+        end;
+        
+    procedure Ordenar_Vector_SELECCION(var v:vector; dimL:integer);
+        var 
+            i,j,p:integer;
+            item:oficina;
+        begin
+            for i:= 1 to dimL-1 do
+                begin
+                    p:=i;
+                    for j:= i+1 to dimL do
+                        if(v[j].codigo<v[p].codigo) then
+                            p:=j;
+                    item:=v[p];
+                    v[p]:=v[i];
+                    v[i]:= item;
+                end;
+        end;
+    var
+        x:integer;
+    begin
+        writeln('----------------------------');
+        writeln('---ORDENAMIENTO  VECTORES---');
+        Writeln('----------------------------');
+        Writeln();
+        writeln('Ingrese 1 para elegir metodo INSERCION');
+        writeln('Ingrese 2 para elegir metodo SELECCION');
+        write('Opcion: ');readln(x);
+        while (x<>1)and(x<>2) do
+            begin
+                write('Valor incorrecto. Ingrese de nuevo: '); 
+                readln(x);
+            end;
+
+        if (x=1) then
+            Ordenar_Vector_INSERCION(v,dimL)
+        else 
+            Ordenar_Vector_SELECCION(v,dimL);
+    end;
+
+procedure ImprimirVector(v:vector; dimL:integer);
+    var 
+        x:integer;
+    begin
+        writeln('-------IMPRIMIENDO VECTOR--------');
+        for x:= 1 to dimL do
+            begin   
+                writeln();
+                writeln('Codigo de identificacion: ',v[x].codigo);
+                writeln('DNI del propietario: ',v[x].dni);
+                writeln('Monto de expensa: ', v[x].expensa:6:2);
+                writeln('______________________________|');
+            end;
+    end;
 
 var 
     v:vector;
+    dimL:integer;
 begin
-    GenerarEstructura(v);
+//--- Inciso A
+    GenerarEstructura(v,dimL);
+    ImprimirVector(v,dimL);
+//--- Inciso B
+    InformarB(v,dimL);
+    ImprimirVector(v,dimL);
 end.
