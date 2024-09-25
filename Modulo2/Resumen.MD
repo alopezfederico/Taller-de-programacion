@@ -35,4 +35,42 @@ public class NombreAplicacion {
   - De lineas multiples: /* comentario */
   - De linea unica: // comentario
 - CASE SENSITIVE (sensible a las mayusculas y minusculas)
+____
 
+### **Declaracion de variables locales a método (main u otro)**
+
+- Se declaran en zona de codigo (no toman valor por defecto)
+```
+    tipo_de_variable Nombre_de_Variable; (Opcional: dar valor inicial)
+```
+
+- Convencion de nombres: comenzar con minuscula, luego cada palabra en mayuscula
+- Asignacion: nombre_variable = valor
+- Tipos primitivos: La variable almacena un valor 
+  - **boolean**: True - False
+  - **char**: 'a' - '0' - '*'
+  - **int**: 102
+  - **double**: 123.4
+- **String** para manipular cadenas: "Esto es un string"
+
+### **Manipulacion de variables**
+
+#### **Operadores aritmeticos**
+  - '+' Operador suma;  con ++ incrementa el valor en 1
+  - '-' Operador resta; con -- decrementa el valor en 1
+  - '*' Operador de multiplicacion
+  - '/' Operador division
+  - '%' Operador resto
+
+#### **Operadores relacionales**
+- == Igual
+- != Distinto
+- '>' Mayor
+- '>=' mayor o igual
+- '<'  Menor
+- '<=' Menor o igual
+- && AND
+- || OR
+- ! NOT
+
+- '+' para concatenar
