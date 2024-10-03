@@ -1,4 +1,4 @@
-package resolucion.de.practicas;
+package resolucion;
 
 import PaqueteLectura.Lector;
 
