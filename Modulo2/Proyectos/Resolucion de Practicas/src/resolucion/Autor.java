@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tema2;
+package resolucion;
 
 /**
  *
  * @author Federico
  */
-public class Ejercicio1 {
-    public static void main(String[] args) {
-        
-    }
+public class Autor {
+    private String nombre;
+    private String biografia;
+    private String origen;
+    
+    
 }
