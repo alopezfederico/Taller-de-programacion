@@ -14,17 +14,7 @@ public class Autor {
     private String biografia;
     private String origen;
     
-    public Autor(String unNombre, String unaBiografia, String unOrigen){
-        nombre = unNombre;
-        biografia = unaBiografia;
-        origen = unOrigen;
-    }
     
-<<<<<<< HEAD
-    public Autor(){
-        
-    }
-=======
     public  Autor (String unNombre, String unaBiografia,String unOrigen){
         nombre = unNombre;
         biografia = unaBiografia;
@@ -41,7 +31,6 @@ public class Autor {
         
     }
     
->>>>>>> bc972e37ec249bc187fc60e305003476d9043b3e
     public String getNombre(){
         return nombre;
     }
@@ -54,10 +43,7 @@ public class Autor {
     public void setNombre(String unNombre){
         nombre = unNombre;
     }
-<<<<<<< HEAD
-=======
     
->>>>>>> bc972e37ec249bc187fc60e305003476d9043b3e
     public void setBiografia(String unaBiografia){
         biografia = unaBiografia;
     }
@@ -68,14 +54,8 @@ public class Autor {
     @Override
     public String toString(){
         String aux;
-<<<<<<< HEAD
-        aux = "Autor: " + nombre + "\n Biografia: " + biografia + "\n Origen: " + origen;
-        return (aux);
-    }
-=======
         aux =  nombre + " | Bio: " + biografia + " | Origen: " + origen;
         return (aux);
     }
     
->>>>>>> bc972e37ec249bc187fc60e305003476d9043b3e
 }
