@@ -57,7 +57,7 @@ public class P3E3 {
         }
         
         System.out.println("Cantidad de libros en el estante: " + estante1.getCantAlmacenados());
-        System.out.println("Autor de 'Mujercitas': " + estante1.getLibro("Mujercitas"));
+        System.out.println("Autor de 'Mujercitas': " + estante1.getAutorLibro("Mujercitas"));
         
     }
 }

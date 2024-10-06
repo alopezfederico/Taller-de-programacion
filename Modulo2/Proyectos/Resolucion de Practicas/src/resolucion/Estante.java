@@ -10,7 +10,7 @@ package resolucion;
  * @author fede_
  */
 public class Estante { 
-    private Libro [] l= new Libro [20];
+    private Libro [] l = new Libro [20];
     private int dimF = 20;
     private int dimL = 0;
     
@@ -28,7 +28,7 @@ public class Estante {
     public String getLleno(){
         if (dimL==dimF){
            return ("Estante lleno");
-        }
+        } 
         else return ("El estante no está lleno");
     }
     
@@ -39,24 +39,21 @@ public class Estante {
         }
     }
     
-    public Libro getLibro(String unTitulo){
-        Libro libro = new Libro();
-        
+    public String getAutorLibro(String unTitulo){
+        String nombre = " ";
+        Autor autor1 = new Autor();
         int cont = 0;
         boolean encontre = false;
-        while ((cont < dimF)&&(! encontre)){
+        while ((cont < dimL)&&(! encontre)){
             if (l[cont].getTitulo().equals(unTitulo)){
-                libro = l[cont];
+                autor1 = l[cont].getPrimerAutor();
                 encontre = true;
             }
             else
                 cont ++;
         }
-        if (encontre){
-            return libro;
-        }
-        else 
-            return null;
+        nombre = autor1.getNombre();
+        return (nombre);
     }
     
     
