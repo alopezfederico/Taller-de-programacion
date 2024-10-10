@@ -35,10 +35,10 @@ representación String de cada uno. Pruebe el funcionamiento del método despint
 */
 public class Programa {
         public static void main(String[] args) {
-        Cuadrado cuad = new Cuadrado(10,"Rojo", "Negro");
-        System.out.println("Color linea: " + cuad.getColorLinea()); 
-        System.out.println("Area: " + cuad.calcularArea()); 
-        System.out.println("Representacion del cuadrado: " + cuad.toString()); 
-       
+        Triangulo t = new Triangulo(10,23,18,"Rojo", "Negro");
+        Circulo c = new Circulo(5,"Azul", "Rojo");
+        
+        System.out.println(t.toString());
+        System.out.println(c.toString());
     }
 }
