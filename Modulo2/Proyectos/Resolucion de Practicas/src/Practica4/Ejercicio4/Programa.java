@@ -17,6 +17,7 @@ y otra que tenga funcionalidad para reportar el promedio histórico por meses.
 
 De la estación, interesa conocer: nombre, y latitud y longitud donde se encuentra.
 Implemente las clases, constructores y métodos que considere necesarios para:
+* 
 a) Crear el sistema de registro/reporte, que funcionará en una determinada estación,
 para N años consecutivos a partir de un año A. Inicie cada temperatura en un valor
 muy alto.
@@ -60,4 +61,38 @@ NOTA: Preste atención de no violar el encapsulamiento al resolver el ejercicio
  */
 public class Programa {
     
+    public static void main(String[] args) {
+        // Crear el sistema de registro anual para la estación La Plata
+        EstacionMeteorologica estacionLaPlata = new EstacionMeteorologica("La Plata", -34.921, -57.955, 3);
+        SistemaDeRegistroAnual sistemaAnual = new SistemaDeRegistroAnual(estacionLaPlata, 3, 2021);
+
+        // Registrar las temperaturas de La Plata (3 años consecutivos desde 2021)
+        // Valores simulados, pueden ser ajustados según sea necesario
+        for (int i = 0; i < 3; i++) {  // N = 3 años
+            for (int j = 0; j < 12; j++) {  // 12 meses
+                double temperatura = 20 + Math.random() * 15;  // Simulando temperaturas aleatorias entre 20 y 35 grados
+                estacionLaPlata.setTemperatura(i, j, temperatura);
+            }
+        }
+
+        // Mostrar el reporte anual de La Plata
+        System.out.println("Reporte anual de La Plata:");
+        System.out.println(sistemaAnual.generarReporte());
+
+        // Crear el sistema de registro mensual para la estación Mar del Plata
+        EstacionMeteorologica estacionMarDelPlata = new EstacionMeteorologica("Mar del Plata", -38.002, -57.556, 4);
+        SistemaDeRegistroMensual sistemaMensual = new SistemaDeRegistroMensual(estacionMarDelPlata, 4, 2020);
+
+        // Registrar las temperaturas de Mar del Plata (4 años consecutivos desde 2020)
+        for (int i = 0; i < 4; i++) {  // N = 4 años
+            for (int j = 0; j < 12; j++) {  // 12 meses
+                double temperatura = 18 + Math.random() * 12;  // Simulando temperaturas aleatorias entre 18 y 30 grados
+                estacionMarDelPlata.setTemperatura(i, j, temperatura);
+            }
+        }
+
+        // Mostrar el reporte mensual de Mar del Plata
+        System.out.println("\nReporte mensual de Mar del Plata:");
+        System.out.println(sistemaMensual.generarReporte());
+    }
 }
