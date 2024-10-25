@@ -1,0 +1,100 @@
+programa Ejercicio5
+
+procesos
+  proceso JuntarFlor
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso JuntarPapel
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso RecorrerF
+  comenzar
+    JuntarFlor
+    mover
+  fin
+  proceso RecorrerP
+  comenzar 
+    JuntarPapel
+    mover
+  fin
+  proceso DepositarP
+  comenzar
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+  fin
+  proceso DepositarF
+  comenzar
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+
+areas
+  ciudad: AreaC(1,1,100,100)
+
+robots
+  robot robot1
+  comenzar
+    derecha
+    repetir 15
+      RecorrerF
+    DepositarF
+    Pos(1,80)
+    repetir 15
+      RecorrerF
+    DepositarF
+  fin
+  
+  robot robot2
+  comenzar
+    repetir 20
+      RecorrerP
+    DepositarP
+    Pos(80,80)
+    repetir 20
+      RecorrerP
+    DepositarP
+  fin
+  
+  robot robot3
+  comenzar
+    derecha
+    repetir 30
+      RecorrerF
+    DepositarF
+    Pos(70,15)
+    repetir 30
+      RecorrerF
+    DepositarF
+  fin
+  robot robot4
+  comenzar
+    repetir 10
+      RecorrerP
+    DepositarP
+    Pos(15,1)
+    repetir 10
+      RecorrerP
+    DepositarP
+  fin
+  
+variables
+  RB1: robot1
+  RB2: robot2
+  RB3: robot3
+  RB4: robot4
+
+comenzar
+  AsignarArea(RB1, ciudad)
+  AsignarArea(RB2, ciudad)
+  AsignarArea(RB3, ciudad)
+  AsignarArea(RB4, ciudad)
+  Iniciar(RB1,1,75)
+  Iniciar(RB2,75,80)
+  Iniciar(RB3,70,10)
+  Iniciar(RB4,10,1)
+fin
+  
