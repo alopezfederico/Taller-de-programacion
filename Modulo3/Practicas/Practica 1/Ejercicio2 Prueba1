@@ -1,0 +1,66 @@
+
+programa Ejercicio2
+
+procesos
+  proceso LimpiarLinea
+  variables
+    cantP:numero
+  comenzar
+    cantP:=0
+    repetir 18
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        cantP:= cantP+1
+      mover
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantP:= cantP+1
+    mover
+    Informar("Cantidad de papeles juntados ", cantP)
+  fin
+  
+areas
+  lado1: AreaC(10,10,10,29)
+  lado2: AreaC(10,30,29,30)
+  lado3: AreaC(30,11,30,30)
+  lado4: AreaC(11,10,30,10)
+
+robots
+  robot robot1
+  comenzar
+    LimpiarLinea
+  fin
+  robot robot2
+  comenzar
+    derecha
+    LimpiarLinea
+  fin
+  robot robot3
+  comenzar
+    repetir 2
+      derecha
+    LimpiarLinea
+  fin
+  robot robot4
+  comenzar
+    repetir 3
+      derecha
+    LimpiarLinea
+  fin
+    
+variables
+  RB1: robot1
+  RB2: robot2
+  RB3: robot3
+  RB4: robot4
+
+comenzar
+  AsignarArea(RB1,lado1)
+  AsignarArea(RB2,lado2)
+  AsignarArea(RB3,lado3)
+  AsignarArea(RB4,lado4)
+  Iniciar(RB1, 10,10)
+  Iniciar(RB2, 10,30)
+  Iniciar(RB3, 30,30)
+  Iniciar(RB4, 30,10)
+fin

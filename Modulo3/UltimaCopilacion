@@ -1,0 +1,99 @@
+{ Fede 2024-10-25T02:52:09.107274800 }
+programa Ejercicio4
+
+procesos
+  proceso Izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso LimpiarPapeles
+  comenzar
+    repetir 12
+      repetir 99
+        mientras (HayPapelEnLaEsquina)
+          tomarPapel
+        mover
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+      derecha
+      mover
+      derecha
+      repetir 99
+        mientras (HayPapelEnLaEsquina)
+          tomarPapel
+        mover
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel     
+      Izquierda
+      mover
+      Izquierda      
+    repetir 99
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+      mover
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso LimpiarFlores
+  comenzar
+    repetir 12
+      repetir 99
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+        mover
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      derecha
+      mover
+      derecha
+      repetir 99
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+        mover
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor     
+      Izquierda
+      mover
+      Izquierda      
+    repetir 99
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      mover
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+
+
+areas
+  area1: AreaP(1,1,25,100)
+  area2: AreaP(26,1,50,100)
+  area3: AreaP(51,1,75,100)
+  area4: AreaP(76,1,100,100)
+  
+robots
+  robot robotPar
+  comenzar
+    LimpiarPapeles
+  fin
+  robot robotImpar
+  comenzar
+    LimpiarFlores
+  fin
+
+variables
+  RB1: robotImpar
+  RB2: robotPar
+  RB3: robotImpar
+  RB4: robotPar
+  
+comenzar
+  AsignarArea(RB1,area1)
+  AsignarArea(RB2,area2)
+  AsignarArea(RB3,area3)
+  AsignarArea(RB4,area4)
+  Iniciar(RB1,1,1)
+  Iniciar(RB2,26,1)
+  Iniciar(RB3,51,1)
+  Iniciar(RB4,76,1)
+fin

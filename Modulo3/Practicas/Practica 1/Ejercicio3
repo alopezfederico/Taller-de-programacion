@@ -1,0 +1,74 @@
+programa Ejercicio3
+
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+
+  proceso recorrer
+  variables
+    cantP:numero
+    cantF:numero
+    cantEsc:numero
+    tamaño:numero
+  comenzar
+    tamaño:=1
+    cantEsc:=0
+    repetir 4
+      cantP:=0
+      cantF:=0
+      repetir tamaño
+        mientras(HayFlorEnLaEsquina)
+          cantF:=cantF+1
+          tomarFlor
+        mientras(HayFlorEnLaBolsa)
+          depositarFlor
+        mientras(HayPapelEnLaEsquina)
+          cantP:=cantP+1
+          tomarPapel
+        mientras(HayPapelEnLaBolsa)
+          depositarPapel
+        mover
+      derecha
+      repetir tamaño
+        mientras(HayFlorEnLaEsquina)
+          cantF:=cantF+1
+          tomarFlor
+        mientras(HayFlorEnLaBolsa)
+          depositarFlor
+        mientras(HayPapelEnLaEsquina)
+          cantP:=cantP+1
+          tomarPapel
+        mientras(HayPapelEnLaBolsa)
+          depositarPapel          
+        mover  
+      izquierda
+      si(cantP > cantF)
+        cantEsc := cantEsc +1
+      tamaño:=tamaño + 1
+    Informar("Cantidad de escalones con mas papeles que flores", cantEsc)
+  fin
+  
+areas
+  ciudad: AreaC(1,1,100,100)
+
+robots
+  robot robot1
+  comenzar
+    recorrer
+  fin
+  
+variables
+  RB1:robot1
+  RB2:robot1
+  RB3:robot1
+comenzar
+  AsignarArea(RB1,ciudad)
+  AsignarArea(RB2,ciudad)
+  AsignarArea(RB3,ciudad)
+  Iniciar(RB1,12,14)
+  Iniciar(RB2,17,10)
+  Iniciar(RB3,22,6)
+fin
