@@ -1,0 +1,63 @@
+programa Ejercicio1
+procesos
+  proceso JuntarFlores(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso Recorrido (ES flores: numero)
+  comenzar
+    flores:=0
+    repetir 9
+      JuntarFlores(flores)
+      mover
+    JuntarFlores(flores)
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot juntador
+  variables
+    flores:numero
+  comenzar
+    Recorrido(flores)
+    EnviarMensaje(flores,RB7)
+  fin
+  robot fiscalizador
+  variables
+    flores,mayor_cant: numero
+  comenzar
+    mayor_cant:=0
+    repetir 6
+      RecibirMensaje(flores,*)
+      si(flores>mayor_cant)
+        mayor_cant:= flores
+    Informar("Mayor cantidad juntada",mayor_cant)
+  fin 
+variables
+  RB1 : juntador
+  RB2 : juntador
+  RB3 : juntador
+  RB4 : juntador
+  RB5 : juntador
+  RB6 : juntador
+  RB7 : fiscalizador
+comenzar
+  AsignarArea(RB1,ciudad)
+  AsignarArea(RB2,ciudad)
+  AsignarArea(RB3,ciudad)
+  AsignarArea(RB4,ciudad)
+  AsignarArea(RB5,ciudad)
+  AsignarArea(RB6,ciudad)
+  AsignarArea(RB7,ciudad)
+  Iniciar(RB1,1,1)
+  Iniciar(RB2,2,11)
+  Iniciar(RB3,3,21)
+  Iniciar(RB4,4,31)
+  Iniciar(RB5,5,41)
+  Iniciar(RB6,6,51)
+  Iniciar(RB7,2,1)
+fin
+
+
