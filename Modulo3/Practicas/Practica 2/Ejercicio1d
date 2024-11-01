@@ -1,0 +1,85 @@
+programa Ejercicio1
+procesos
+  proceso JuntarFlores(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso Recorrido (ES flores: numero)
+  comenzar
+    flores:=0
+    repetir 9
+      JuntarFlores(flores)
+      mover
+    JuntarFlores(flores)
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot juntador
+  variables
+    soy,flores:numero
+  comenzar
+    RecibirMensaje(soy,RB7)
+    Recorrido(flores)
+    EnviarMensaje(soy,RB7)
+    EnviarMensaje(flores,RB7)
+  fin
+  robot fiscalizador
+  variables
+    quien, i,flores,mayor_cant,id_rb: numero
+  comenzar
+    mayor_cant:=-1
+    EnviarMensaje(1,RB1)
+    EnviarMensaje(2,RB2)
+    EnviarMensaje(3,RB3)
+    EnviarMensaje(4,RB4)
+    EnviarMensaje(5,RB5)
+    EnviarMensaje(6,RB6)
+    repetir 6
+      RecibirMensaje(quien,*)
+      si(quien=1)
+        RecibirMensaje(flores,RB1)
+      si(quien=2)
+        RecibirMensaje(flores,RB2)
+      si(quien=3)
+        RecibirMensaje(flores,RB3)
+      si(quien=4)
+        RecibirMensaje(flores,RB4)
+      si(quien=5)
+        RecibirMensaje(flores,RB5)
+      si(quien=6)
+        RecibirMensaje(flores,RB6)
+      si(flores>mayor_cant)
+        mayor_cant:= flores
+        id_rb := quien
+    Informar("Mayor cantidad juntada",mayor_cant)
+    Informar("Robot recolector", id_rb)
+  fin 
+variables
+  RB1 : juntador
+  RB2 : juntador
+  RB3 : juntador
+  RB4 : juntador
+  RB5 : juntador
+  RB6 : juntador
+  RB7 : fiscalizador
+comenzar
+  AsignarArea(RB1,ciudad)
+  AsignarArea(RB2,ciudad)
+  AsignarArea(RB3,ciudad)
+  AsignarArea(RB4,ciudad)
+  AsignarArea(RB5,ciudad)
+  AsignarArea(RB6,ciudad)
+  AsignarArea(RB7,ciudad)
+  Iniciar(RB1,1,1)
+  Iniciar(RB2,2,11)
+  Iniciar(RB3,3,21)
+  Iniciar(RB4,4,31)
+  Iniciar(RB5,5,41)
+  Iniciar(RB6,6,51)
+  Iniciar(RB7,2,1)
+fin
+
+
