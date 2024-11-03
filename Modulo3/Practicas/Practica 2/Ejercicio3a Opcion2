@@ -1,0 +1,110 @@
+programa Ejercicio3
+procesos
+  proceso JuntarFlores(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores +1
+  fin
+  proceso JuntarPapeles(ES papeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles +1
+  fin
+  proceso Recorrido1(E equipo:numero; ES elemento:numero)
+  comenzar
+    si(equipo=1)
+      repetir 9
+        JuntarPapeles(elemento)
+        mover
+    sino
+      repetir 9
+        JuntarFlores(elemento)
+        mover
+  fin
+  proceso Recorrido2(E equipo:numero; ES elemento:numero)
+  comenzar
+    si (equipo=1)
+      repetir 9
+        JuntarPapeles(elemento)
+        mover
+      JuntarPapeles(elemento)
+    sino
+      repetir 9
+        JuntarFlores(elemento)
+        mover
+      JuntarFlores(elemento)
+  fin
+areas
+  AreaEquipoA: AreaP(1,1,40,1)
+  AreaEquipoB: AreaP(1,5,40,5)
+robots
+  robot A1
+  variables
+    papeles: numero
+  comenzar
+    derecha
+    papeles:=0
+    Recorrido1(1,papeles)
+    EnviarMensaje(papeles,RA2)
+    Pos(21,1)
+    RecibirMensaje(papeles,RA2)
+    Recorrido1(1,papeles)
+    EnviarMensaje(papeles,RA2)
+  fin
+  robot A2
+  variables
+    papeles:numero
+  comenzar
+    derecha
+    RecibirMensaje(papeles,RA1)
+    Recorrido2(1,papeles)
+    EnviarMensaje(papeles,RA1)
+    Pos(31,1)
+    RecibirMensaje(papeles,RA1)
+    Recorrido2(1,papeles)    
+    Informar("Papeles recogidos", papeles)
+  fin
+  robot B1
+  variables
+    flores: numero
+  comenzar
+    derecha
+    flores:=0
+    Recorrido1(2,flores)
+    EnviarMensaje(flores,RB2)
+    Pos(21,5)
+    RecibirMensaje(flores,RB2)
+    Recorrido1(2,flores)
+    EnviarMensaje(flores,RB2)
+  fin
+  robot B2
+  variables
+    flores:numero
+  comenzar
+    derecha
+    RecibirMensaje(flores,RB1)
+    Recorrido2(2,flores)
+    EnviarMensaje(flores,RB1)
+    Pos(31,5)
+    RecibirMensaje(flores,RB1)
+    Recorrido2(2,flores)    
+    Informar("Flores recogidos", flores)
+  fin
+
+variables
+  RA1:A1
+  RA2:A2
+  RB1:B1
+  RB2:B2
+comenzar
+  AsignarArea(RA1,AreaEquipoA)
+  AsignarArea(RA2,AreaEquipoA)
+  AsignarArea(RB1,AreaEquipoB)
+  AsignarArea(RB2,AreaEquipoB)
+  Iniciar(RA1,1,1)
+  Iniciar(RA2,11,1)
+  Iniciar(RB1,1,5)
+  Iniciar(RB2,11,5)
+fin
