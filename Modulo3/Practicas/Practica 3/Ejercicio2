@@ -1,0 +1,127 @@
+programa Ejercicio2
+procesos
+  proceso JuntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso JuntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+ 
+areas
+  ciudad : AreaC(1,1,100,100) 
+robots
+  robot flores1
+  variables
+    pasos:numero
+  comenzar
+    pasos:=5
+    repetir 4
+      JuntarFlores
+      repetir 2
+        repetir pasos
+          mover
+        JuntarFlores
+        derecha
+      derecha
+      derecha
+      pasos:= pasos - 1
+    mover
+    JuntarFlores
+    derecha
+    BloquearEsquina(PosAv +1,PosCa)
+    mover
+    EnviarMensaje(1,R_jefe)
+    derecha
+    derecha
+    mover
+    LiberarEsquina(PosAv+1,PosCa)
+    pasos:= 2
+    repetir 4
+      JuntarFlores
+      repetir 2
+        repetir pasos
+          mover
+        JuntarFlores
+        derecha
+      derecha
+      derecha
+      pasos:= pasos + 1
+    EnviarMensaje( 1 ,R_jefe)
+  fin
+  robot papeles2
+  variables
+    pasos:numero
+  comenzar
+    pasos:=5
+    repetir 4
+      repetir 2
+        repetir pasos
+          mover
+        JuntarFlores
+        izquierda
+      derecha
+      derecha
+      pasos:= pasos - 1
+    mover
+    JuntarFlores
+    izquierda
+    BloquearEsquina(PosAv -1,PosCa)
+    mover
+    EnviarMensaje(2,R_jefe)
+    derecha
+    derecha
+    mover
+    LiberarEsquina(PosAv-1,PosCa)
+    pasos:= 2
+    repetir 4
+      repetir 2
+        repetir pasos
+          mover
+        JuntarFlores
+        izquierda
+      derecha
+      derecha
+      pasos:= pasos + 1
+    EnviarMensaje(1,R_jefe)
+  fin
+  robot jefe
+  variables
+    primero,segundo : numero
+    confirm:numero
+  comenzar
+    Pos(15,1)
+    RecibirMensaje(primero, *)
+    RecibirMensaje(segundo, *)
+    RecibirMensaje(confirm, *)
+    RecibirMensaje(confirm, *)
+    Informar("Primer lugar", primero)
+  fin
+variables
+  R_flores : flores1
+  R_papeles: papeles2
+  R_jefe: jefe
+comenzar
+  AsignarArea(R_flores, ciudad)
+  AsignarArea(R_papeles, ciudad)
+  AsignarArea(R_jefe, ciudad)
+  Iniciar(R_flores,1,1)
+  Iniciar(R_papeles,31,1)
+  Iniciar(R_jefe,15,1)
+fin
+    
+    
+      
+    
+    
+      
+        
+    

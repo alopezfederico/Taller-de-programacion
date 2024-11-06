@@ -1,0 +1,106 @@
+programa Ejercicio3
+procesos
+  proceso JuntarFlor (ES flores:numero; ES finalizar: boolean)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+    sino
+      finalizar:= V
+  fin
+areas
+  sector : AreaPC(2,2,10,10)
+  puntoJefe: AreaP(1,1,1,1)
+  puntoR1: AreaP(2,1,2,1)
+  puntoR2: AreaP(3,1,3,1)
+  puntoR3: AreaP(4,1,4,1)
+  puntoR4: AreaP(5,1,5,1)
+robots
+  robot recolector
+  variables
+    id:numero
+    avenida,calle:numero
+    aOrigen, cOrigen:numero
+    finalizar: boolean
+    flores:numero
+  comenzar
+    finalizar:= F
+    flores:=0
+    aOrigen:= PosAv
+    cOrigen:= PosCa
+    RecibirMensaje(id,R_Jefe)
+    RecibirMensaje(avenida,R_Jefe)
+    RecibirMensaje(calle,R_Jefe)
+    mientras (finalizar = F)
+      BloquearEsquina(avenida,calle)
+      Pos(avenida,calle)
+      JuntarFlor(flores,finalizar)
+      Pos(aOrigen,cOrigen)
+      LiberarEsquina(avenida,calle)
+    EnviarMensaje(id, R_Jefe)
+    EnviarMensaje(flores,R_Jefe)
+  fin
+  robot jefe
+  variables
+    id, cant, max,idMax:numero
+    Av,Ca:numero
+  comenzar
+    max:=0
+    Random(Av,2,10)
+    Random(Ca,2,10)
+    EnviarMensaje(1,RB1)
+    EnviarMensaje(Av,RB1)
+    EnviarMensaje(Ca,RB1)
+    EnviarMensaje(2,RB2)
+    EnviarMensaje(Av,RB2)
+    EnviarMensaje(Ca,RB2)
+    EnviarMensaje(3,RB3)
+    EnviarMensaje(Av,RB3)
+    EnviarMensaje(Ca,RB3)
+    EnviarMensaje(4,RB4)
+    EnviarMensaje(Av,RB4)
+    EnviarMensaje(Ca,RB4)
+    repetir 4
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(cant, RB1)
+        si(cant>max)
+          max:=cant
+          idMax:=id
+      si (id = 2)
+        RecibirMensaje(cant, RB2)
+        si(cant>max)
+          max:=cant
+          idMax:=id
+      si (id = 3)
+        RecibirMensaje(cant, RB3)
+        si(cant>max)
+          max:=cant
+          idMax:=id
+      si (id = 4)
+        RecibirMensaje(cant, RB4)
+        si(cant>max)
+          max:=cant
+          idMax:=id
+    Informar("Mayor recolectorr", idMax)        
+  fin
+variables
+  RB1,RB2,RB3,RB4: recolector
+  R_Jefe: jefe
+comenzar
+  AsignarArea(RB1, puntoR1)
+  AsignarArea(RB2, puntoR2)
+  AsignarArea(RB3, puntoR3)
+  AsignarArea(RB4, puntoR4)
+  AsignarArea(R_Jefe, puntoJefe)
+  AsignarArea(RB1, sector)
+  AsignarArea(RB2, sector)
+  AsignarArea(RB3, sector)
+  AsignarArea(RB4, sector)
+  Iniciar(RB1, 2,1)
+  Iniciar(RB2, 3,1)
+  Iniciar(RB3, 4,1)
+  Iniciar(RB4, 5,1)
+  Iniciar(R_Jefe, 1,1)
+fin
+    
