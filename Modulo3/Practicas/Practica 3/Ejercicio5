@@ -1,0 +1,94 @@
+programa Ejercicio5
+procesos 
+  proceso JuntarPapel(ES vacio:boolean)
+  comenzar
+    si(HayPapelEnLaEsquina)
+      tomarPapel
+    sino
+      vacio:=V
+  fin
+areas
+  LineaRB1: AreaP(4,1,4,100)
+  LineaRB2: AreaP(6,1,6,100)
+  LineaRB3: AreaP(8,1,8,100)
+  LineaRB4: AreaP(10,1,10,100)
+  EsquinaCoord: AreaP(1,1,1,1)
+  SectorRecoleccion: AreaPC(11,11,11,11)
+robots
+  robot participante
+  variables
+    dist, id, cOrigen,aOrigen:numero
+    finalizado:boolean
+  comenzar
+    RecibirMensaje(id,R_Coord)
+    finalizado:=F
+    mientras((finalizado = F)&(PosCa<100))
+      cOrigen:=PosCa
+      aOrigen:=PosAv
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      JuntarPapel(finalizado)
+      Pos(aOrigen,cOrigen)
+      LiberarEsquina(11,11)
+      si(HayPapelEnLaBolsa)
+        depositarPapel
+        mover
+    EnviarMensaje(id,R_Coord)
+    dist:= PosCa
+    EnviarMensaje(dist,R_Coord)
+  fin
+  robot coordinador
+  variables
+    id, dist, idMax, maxDistancia:numero
+  comenzar
+    EnviarMensaje(1,RB1)
+    EnviarMensaje(2,RB2)
+    EnviarMensaje(3,RB3)
+    EnviarMensaje(4,RB4)
+    maxDistancia:= 0
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id = 1)
+        RecibirMensaje(dist,RB1)
+        si(dist>maxDistancia)
+          maxDistancia:=dist
+          idMax:=id
+      si(id = 2)
+        RecibirMensaje(dist,RB2)
+        si(dist>maxDistancia)
+          maxDistancia:=dist
+          idMax:=id
+      si(id = 3)
+        RecibirMensaje(dist,RB3)
+        si(dist>maxDistancia)
+          maxDistancia:=dist
+          idMax:=id
+      si(id = 4)
+        RecibirMensaje(dist,RB4)
+        si(dist>maxDistancia)
+          maxDistancia:=dist
+          idMax:=id
+    Informar("Llego mas lejos", idMax)
+  fin
+variables
+  RB1,RB2,RB3,RB4: participante
+  R_Coord: coordinador
+comenzar
+  AsignarArea(RB1, LineaRB1)
+  AsignarArea(RB1, SectorRecoleccion)
+  AsignarArea(RB2, LineaRB2)
+  AsignarArea(RB2, SectorRecoleccion)
+  AsignarArea(RB3, LineaRB3)
+  AsignarArea(RB3, SectorRecoleccion)
+  AsignarArea(RB4, LineaRB4)
+  AsignarArea(RB4, SectorRecoleccion)
+  AsignarArea(R_Coord, EsquinaCoord)
+  Iniciar(RB1,4,1)
+  Iniciar(RB2,6,1)
+  Iniciar(RB3,8,1)
+  Iniciar(RB4, 10,1)
+  Iniciar(R_Coord, 1,1)
+fin
+      
+    
+      
