@@ -1,0 +1,192 @@
+programa Ejercicio6
+procesos
+  proceso JuntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso JuntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+areas
+  cuadrado: AreaC(1,2,100,100)
+  esquinaJefe: AreaP(1,1,1,1)
+robots
+  robot robot1
+  variables
+    id:numero
+    calle: numero
+    pasos,lado: numero
+  comenzar
+    id:=1
+    lado:=0
+    repetir 4
+      lado:=lado+1
+      pasos:=6
+      mientras(pasos>0)
+        JuntarFlores
+        si((lado=2)&(PosCa=8)&(PosAv+1=5))
+          BloquearEsquina(5,8)
+          mover
+          JuntarFlores
+          mover
+          LiberarEsquina(5,8)
+          pasos:= pasos -2
+        sino 
+          si((lado=3)&(PosCa-1=5)&(PosAv=8))
+            BloquearEsquina(8,5)
+            mover
+            JuntarFlores
+            mover
+            LiberarEsquina(8,5)
+            pasos:=pasos-2
+          sino
+            mover
+            pasos:=pasos-1
+      derecha
+    EnviarMensaje(id,Jefe)
+    RecibirMensaje(calle,Jefe)
+    Pos(1,calle)
+    derecha
+    mientras((HayFlorEnLaBolsa)&(PosAv<100))
+      depositarFlor
+      mover
+  fin
+  robot robot2
+  variables
+    id:numero
+    calle,lado,pasos: numero
+  comenzar
+    id:=2
+    lado:=0
+    repetir 4
+      lado:=lado+1
+      pasos:=10
+      mientras(pasos>0)
+        JuntarFlores
+        JuntarPapeles
+        si((lado=1)&(PosCa+1=8)&(PosAv=5))
+          BloquearEsquina(5,8)
+          mover
+          JuntarFlores
+          JuntarPapeles
+          mover
+          LiberarEsquina(5,8)
+          pasos:= pasos -2
+        sino 
+          si((lado=4)&(PosCa=5)&(PosAv-1=8))
+            BloquearEsquina(8,5)
+            mover
+            JuntarFlores
+            JuntarPapeles
+            mover
+            LiberarEsquina(8,5)
+            pasos:=pasos-2
+          sino
+            si((lado=2)&(PosAv+1=9)&(PosCa=15))
+              BloquearEsquina(9,15)
+              mover
+              JuntarFlores
+              JuntarPapeles
+              mover
+              LiberarEsquina(9,15)
+              pasos:= pasos-2
+            sino
+              si((lado=3)&(PosAv=15)&(PosCa-1=9))
+                BloquearEsquina(15,9)
+                mover
+                JuntarPapeles
+                JuntarFlores
+                mover
+                LiberarEsquina(15,9)
+                pasos:=pasos-2
+              sino
+                mover
+                pasos:=pasos-1
+      derecha
+    EnviarMensaje(id,Jefe)
+    RecibirMensaje(calle,Jefe)
+    Pos(1,calle)
+    derecha
+    mientras((HayFlorEnLaBolsa)|(HayPapelEnLaBolsa)&(PosAv<100))
+      si(HayFlorEnLaBolsa)
+        depositarFlor
+      si(HayPapelEnLaBolsa)
+        depositarPapel
+      mover
+  fin  
+  robot robot3
+  variables
+    id:numero
+    calle,lado,pasos: numero
+  comenzar
+    id:= 3
+    lado:=0
+    repetir 4
+      lado:=lado+1
+      pasos:=7
+      mientras(pasos>0)
+        JuntarPapeles
+        si((lado=1)&(PosCa+1=15)&(PosAv=9))
+          BloquearEsquina(9,15)
+          mover
+          JuntarPapeles
+          mover
+          LiberarEsquina(9,15)
+          pasos:=pasos-2
+        sino
+          si((lado=4)&(PosAv-1=15)&(PosCa=9))
+            BloquearEsquina(15,9)
+            mover
+            JuntarPapeles
+            mover
+            LiberarEsquina(15,9)
+            pasos:=pasos-2
+          sino
+            JuntarPapeles
+            mover
+            pasos:=pasos-1
+      derecha
+    EnviarMensaje(id,Jefe)
+    RecibirMensaje(calle,Jefe)
+    Pos(1,calle)
+    derecha
+    mientras((HayPapelEnLaBolsa)&(PosAv<100))
+      si(HayPapelEnLaBolsa)
+        depositarPapel
+      mover
+  fin  
+  robot fiscal
+  variables
+    id,calle:numero
+  comenzar
+    calle:=20
+    repetir 3
+      RecibirMensaje(id,*)
+      si(id=1)
+        EnviarMensaje(calle,RB1)
+      sino
+        si(id=2)
+          EnviarMensaje(calle,RB2)
+        sino
+          si(id=3)
+            EnviarMensaje(calle,RB3)
+      calle:=calle+1
+  fin
+variables
+  RB1: robot1
+  RB2: robot2
+  RB3: robot3
+  Jefe: fiscal
+comenzar
+  AsignarArea(RB1, cuadrado)
+  AsignarArea(RB2, cuadrado)
+  AsignarArea(RB3, cuadrado)
+  AsignarArea(Jefe, esquinaJefe)
+  Iniciar(RB1, 2,2)
+  Iniciar(RB2, 5,5)
+  Iniciar(RB3, 9,9)
+  Iniciar(Jefe, 1,1)
+fin
