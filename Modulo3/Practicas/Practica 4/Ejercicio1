@@ -1,0 +1,125 @@
+programa Ejercicio1
+procesos
+  proceso JuntarPedido(ES entregado: boolean)
+  comenzar
+    si(entregado=V)
+      mover
+      entregado:=F
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso JuntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso EntregarFlores(ES flores:numero)
+  comenzar
+    repetir flores
+      depositarFlor
+  fin
+  proceso avanzar
+  comenzar
+    si(HayFlorEnLaBolsa)
+      depositarFlor
+    mientras ((HayFlorEnLaBolsa)&(PosCa<100))
+      mover
+      depositarFlor
+  fin
+areas  
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot cliente
+  variables
+    id, flores, calle,avenida:numero
+    pedido,entregado: boolean
+  comenzar
+    RecibirMensaje(id,R_Servidor)
+    mientras(PosCa<100)
+      entregado:=F
+      Random(flores,1,4)
+      EnviarMensaje(id,R_Servidor)
+      pedido:=V
+      EnviarMensaje(pedido,R_Servidor)
+      calle:= PosCa+1
+      avenida:= PosAv
+      EnviarMensaje(calle,R_Servidor)
+      EnviarMensaje(avenida,R_Servidor)
+      EnviarMensaje(flores,R_Servidor)
+      RecibirMensaje(entregado,R_Servidor)
+      JuntarPedido(entregado)
+      avanzar
+    pedido:=F
+    EnviarMensaje(id,R_Servidor)
+    EnviarMensaje(pedido,R_Servidor)
+  fin
+  robot servidor
+  variables
+    cantidad,completos,id,calle,avenida:numero
+    pedido:boolean
+  comenzar
+    completos:=0
+    JuntarFlores
+    EnviarMensaje(1,R_c1)
+    EnviarMensaje(2,R_c2)
+    EnviarMensaje(3,R_c3)
+    mientras(completos < 3)
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(pedido, R_c1)
+        si (pedido = V)
+          RecibirMensaje(calle,R_c1)
+          RecibirMensaje(avenida,R_c1)
+          BloquearEsquina(avenida,calle)
+          RecibirMensaje(cantidad,R_c1)
+          Pos(avenida,calle)
+          EntregarFlores(cantidad)
+          Pos(100,100)
+          LiberarEsquina(avenida,calle)
+          EnviarMensaje(V,R_c1)
+        si(pedido = F)
+          completos:= completos + 1
+      sino
+        si(id=2)
+          RecibirMensaje(pedido, R_c2)
+          si(pedido = V)
+            RecibirMensaje(calle,R_c2)
+            RecibirMensaje(avenida,R_c2)
+            BloquearEsquina(avenida,calle)
+            RecibirMensaje(cantidad,R_c2)
+            Pos(avenida,calle)
+            EntregarFlores(cantidad)
+            Pos(100,100)
+            LiberarEsquina(avenida,calle)
+            EnviarMensaje(V,R_c2)
+          si(pedido = F)
+            completos:= completos + 1          
+        sino
+          si(id=3)
+            RecibirMensaje(pedido, R_c3)
+            si(pedido=V)
+              RecibirMensaje(calle,R_c3)
+              RecibirMensaje(avenida,R_c3)
+              BloquearEsquina(avenida,calle)
+              RecibirMensaje(cantidad,R_c3)
+              Pos(avenida,calle)
+              EntregarFlores(cantidad)
+              Pos(100,100)
+              LiberarEsquina(avenida,calle)        
+              EnviarMensaje(V,R_c3)
+            si(pedido = F)
+              completos:=completos+1
+  fin
+variables
+  R_c1,R_c2,R_c3: cliente
+  R_Servidor: servidor
+comenzar
+  AsignarArea(R_c1, ciudad)
+  AsignarArea(R_c2, ciudad)
+  AsignarArea(R_c3, ciudad)
+  AsignarArea(R_Servidor, ciudad)
+  Iniciar(R_Servidor, 100,100)
+  Iniciar(R_c1,1,1)
+  Iniciar(R_c2,2,1)
+  Iniciar(R_c3,3,1)
+fin

@@ -1,0 +1,138 @@
+programa Ejercicio3
+procesos
+  proceso JuntarFlores(ES flores:numero; E cant:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)&(flores<cant)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso CompletarEtapa
+  variables
+    flores,cant:numero
+  comenzar
+    flores:=0
+    Random(cant,1,5)
+    mientras (flores<cant)&(PosCa<100)
+      JuntarFlores(flores,cant)
+      si~(HayFlorEnLaEsquina)
+        mover
+  fin
+areas
+  ciudad : AreaC(1,1,100,100)
+robots
+  robot recolector
+  variables
+    listo,final1,final2,check1,check2:boolean
+    id:numero
+  comenzar
+    RecibirMensaje(id,R_coord)
+    check1:=F
+    check2:=F
+    si(id=1)
+      EnviarMensaje(V,R_r2)
+      EnviarMensaje(F,R_r2)
+      EnviarMensaje(V,R_r3)
+      EnviarMensaje(F,R_r3)
+    sino
+      si(id=2)
+        EnviarMensaje(V,R_r1)
+        EnviarMensaje(F,R_r1)
+        EnviarMensaje(V,R_r3)
+        EnviarMensaje(F,R_r3)
+      sino
+        si(id=3)
+          EnviarMensaje(V,R_r1)
+          EnviarMensaje(F,R_r1)
+          EnviarMensaje(V,R_r2)
+          EnviarMensaje(F,R_r2)
+    si(id=1)
+      RecibirMensaje(check1,R_r2)
+      RecibirMensaje(final1,R_r2)
+      RecibirMensaje(check2,R_r3)
+      RecibirMensaje(final2,R_r3)
+    sino
+      si(id=2)
+        RecibirMensaje(check1,R_r1)
+        RecibirMensaje(final1,R_r1)
+        RecibirMensaje(check2,R_r3)
+        RecibirMensaje(final2,R_r3)
+      sino
+        si(id=3)
+          RecibirMensaje(check1,R_r1)
+          RecibirMensaje(final1,R_r1)
+          RecibirMensaje(check2,R_r2)
+          RecibirMensaje(final2,R_r2)
+    mientras(PosCa<100)&(check1 = V)&(check2 = V)
+      CompletarEtapa
+      si(id=1)
+        EnviarMensaje(V,R_r2)
+        EnviarMensaje(V,R_r3)
+        si(PosCa<100)
+          EnviarMensaje(F,R_r2)
+          EnviarMensaje(F,R_r3)
+        sino
+          EnviarMensaje(V,R_r2)
+          EnviarMensaje(V,R_r3)
+      sino
+        si(id=2)
+          EnviarMensaje(V,R_r1)
+          EnviarMensaje(V,R_r3)
+          si(PosCa<100)
+            EnviarMensaje(F,R_r1)
+            EnviarMensaje(F,R_r3)
+          sino
+            EnviarMensaje(V,R_r1)
+            EnviarMensaje(V,R_r3)
+        sino
+          si(id=3)
+            EnviarMensaje(V,R_r1)
+            EnviarMensaje(V,R_r2)
+            si(PosCa<100)
+              EnviarMensaje(F,R_r1)
+              EnviarMensaje(F,R_r2)
+            sino
+              EnviarMensaje(V,R_r1)
+              EnviarMensaje(V,R_r2)
+      si(id=1)
+        si (final1 = F)
+          RecibirMensaje(check1,R_r2)
+          RecibirMensaje(final1,R_r2)
+        si (final2 = F)
+          RecibirMensaje(check2,R_r3)
+          RecibirMensaje(final2,R_r3)
+      sino
+        si(id=2)
+          si (final1 = F)
+            RecibirMensaje(check1,R_r1)
+            RecibirMensaje(final1,R_r1)
+          si (final2 = F)
+            RecibirMensaje(check2,R_r3)
+            RecibirMensaje(final2,R_r3)
+        sino
+          si(id=3)           
+            si (final1 = F)
+              RecibirMensaje(check1,R_r1)
+              RecibirMensaje(final1,R_r1)
+            si (final2 = F)
+              RecibirMensaje(check2,R_r2)
+              RecibirMensaje(final2,R_r2)
+  fin
+  robot coord
+  comenzar
+    EnviarMensaje(1,R_r1)
+    EnviarMensaje(2,R_r2)
+    EnviarMensaje(3,R_r3)
+  fin
+variables
+  R_r1,R_r2,R_r3: recolector
+  R_coord: coord
+comenzar
+  AsignarArea(R_r1,ciudad)
+  AsignarArea(R_r2,ciudad)
+  AsignarArea(R_r3,ciudad)
+  AsignarArea(R_coord,ciudad)
+  Iniciar(R_r1,1,1)
+  Iniciar(R_r2,2,1)
+  Iniciar(R_r3,3,1)
+  Iniciar(R_coord,5,1)
+fin
