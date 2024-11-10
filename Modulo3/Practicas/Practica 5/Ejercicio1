@@ -1,4 +1,3 @@
-{ Fede 2024-11-10T04:47:52.058168400 }
 programa Ejercicio1
 procesos
   proceso JuntarFlores(ES flores:numero)

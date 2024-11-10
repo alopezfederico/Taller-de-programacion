@@ -1,0 +1,101 @@
+programa Ejercicio4
+procesos
+  proceso tarea1
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso tarea2
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso tarea3
+  comenzar
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+  proceso tarea4 (ES finalizado: boolean)
+  comenzar
+    finalizado:= V
+  fin
+areas
+  Ciudad : AreaC(2,2,100,100)
+  Area_t1: AreaP(2,1,2,1)
+  Area_t2: AreaP(3,1,3,1)
+  AreaJefe: AreaP(1,1,1,1)
+robots
+  robot trabajador
+  variables
+    id:numero
+    tarea, avenida,calle:numero
+    AvOrigen, CaOrigen:numero
+    finalizado: boolean
+  comenzar
+    finalizado:= F
+    AvOrigen:= PosAv
+    CaOrigen:= PosCa
+    RecibirMensaje(id,R_Jefe)
+    mientras (finalizado = F)
+      RecibirMensaje(tarea,R_Jefe)
+      si ~(tarea=4)
+        RecibirMensaje(avenida,R_Jefe)
+        RecibirMensaje(calle,R_Jefe)
+        BloquearEsquina(avenida,calle)
+        Pos(avenida,calle)
+        si(tarea=1)
+          tarea1
+        sino
+          si(tarea=2)
+            tarea2
+          sino
+            si (tarea=3)
+              tarea3
+        Pos(AvOrigen,CaOrigen)
+        LiberarEsquina(avenida,calle)
+        EnviarMensaje(V,R_Jefe)
+      sino
+        tarea4(finalizado)
+  fin
+  robot jefe
+  variables
+    id:numero
+    tarea, avenida, calle: numero
+    check:boolean
+  comenzar
+    EnviarMensaje(1,R_t1)
+    EnviarMensaje(1,R_t2)
+    repetir 9
+      Random(tarea,1,3)
+      Random(avenida,2,100)
+      Random(calle,2,100)
+      Random(id,1,2)
+      si(id=1)
+        EnviarMensaje(tarea,R_t1)
+        EnviarMensaje(avenida,R_t1)
+        EnviarMensaje(calle,R_t1)
+        RecibirMensaje(check,R_t1)
+      sino
+        si(id=2)
+          EnviarMensaje(tarea,R_t2)
+          EnviarMensaje(avenida,R_t2)
+          EnviarMensaje(calle,R_t2)
+          RecibirMensaje(check,R_t2)
+    EnviarMensaje(4,R_t1)
+    EnviarMensaje(4,R_t2)
+  fin
+variables
+  R_t1,R_t2: trabajador
+  R_Jefe: jefe
+comenzar
+  AsignarArea(R_t1, Ciudad)
+  AsignarArea(R_t2, Ciudad)
+  AsignarArea(R_t1, Area_t1)
+  AsignarArea(R_t2, Area_t2)
+  AsignarArea(R_Jefe, AreaJefe)
+  Iniciar(R_Jefe,1,1)
+  Iniciar(R_t1,2,1)
+  Iniciar(R_t2,3,1)
+fin
