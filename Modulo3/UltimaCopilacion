@@ -1,97 +1,139 @@
-{ Fede 2024-11-06T17:32:20.707651100 }
-programa Ejercicio1
-procesos 
-  proceso JuntarPapeles
+{ Fede 2024-11-09T02:47:18.017142700 }
+programa Ejercicio3
+procesos
+  proceso JuntarFlores(ES flores:numero; E cant:numero)
   comenzar
-    mientras (HayPapelEnLaEsquina)
-      tomarPapel
-  fin
-  proceso JuntarFlores
-  comenzar
-    mientras(HayFlorEnLaEsquina)
+    mientras(HayFlorEnLaEsquina)&(flores<cant)
       tomarFlor
+      flores:=flores+1
   fin
-  proceso DepositarFlores
+  proceso CompletarEtapa
+  variables
+    flores,cant:numero
   comenzar
-    mientras(HayFlorEnLaBolsa)
-      depositarFlor
-  fin
-  proceso DepositarPapeles
-  comenzar
-    mientras(HayPapelEnLaBolsa)
-      depositarPapel
+    flores:=0
+    Random(cant,1,5)
+    mientras (flores<cant)&(PosCa<100)
+      JuntarFlores(flores,cant)
+      si~(HayFlorEnLaEsquina)
+        mover
   fin
 areas
-  areaFloreros: AreaPC(1,1,5,10)
-  areaPapeleros: AreaPC(6,1,10,9)
-  areaRflorero1: AreaP(6,10,6,10)
-  areaRflorero2: AreaP(7,10,7,10)
-  areaRpapelero1: AreaP(8,10,8,10)
-  areaRpapelero2: AreaP(9,10,9,10)
-  areaCompartida: AreaPC(10,10,10,10)
+  ciudad : AreaC(1,1,100,100)
 robots
-  robot florero
+  robot recolector
   variables
-    calle,avenida:numero
-    cOrigen,aOrigen:numero
+    listo,final1,final2,check1,check2:boolean
+    id:numero
   comenzar
-    repetir 5
-      Random(calle,1,10)
-      Random(avenida,1,5)
-      BloquearEsquina(avenida,calle)
-      cOrigen := PosCa
-      aOrigen := PosAv
-      Pos(avenida,calle)
-      JuntarFlores
-      Pos(aOrigen,cOrigen)
-      LiberarEsquina(avenida,calle)
-    BloquearEsquina(10,10)
-    Pos(10,10)
-    DepositarFlores
-    Pos(aOrigen,cOrigen)
-    LiberarEsquina(10,10)
+    RecibirMensaje(id,R_coord)
+    check1:=F
+    check2:=F
+    si(id=1)
+      EnviarMensaje(V,R_r2)
+      EnviarMensaje(F,R_r2)
+      EnviarMensaje(V,R_r3)
+      EnviarMensaje(F,R_r3)
+    sino
+      si(id=2)
+        EnviarMensaje(V,R_r1)
+        EnviarMensaje(F,R_r1)
+        EnviarMensaje(V,R_r3)
+        EnviarMensaje(F,R_r3)
+      sino
+        si(id=3)
+          EnviarMensaje(V,R_r1)
+          EnviarMensaje(F,R_r1)
+          EnviarMensaje(V,R_r2)
+          EnviarMensaje(F,R_r2)
+    si(id=1)
+      RecibirMensaje(check1,R_r2)
+      RecibirMensaje(final1,R_r2)
+      RecibirMensaje(check2,R_r3)
+      RecibirMensaje(final2,R_r3)
+    sino
+      si(id=2)
+        RecibirMensaje(check1,R_r1)
+        RecibirMensaje(final1,R_r1)
+        RecibirMensaje(check2,R_r3)
+        RecibirMensaje(final2,R_r3)
+      sino
+        si(id=3)
+          RecibirMensaje(check1,R_r1)
+          RecibirMensaje(final1,R_r1)
+          RecibirMensaje(check2,R_r2)
+          RecibirMensaje(final2,R_r2)
+    mientras(PosCa<100)&(check1 = V)&(check2 = V)
+      CompletarEtapa
+      si(id=1)
+        EnviarMensaje(V,R_r2)
+        EnviarMensaje(V,R_r3)
+        si(PosCa<100)
+          EnviarMensaje(F,R_r2)
+          EnviarMensaje(F,R_r3)
+        sino
+          EnviarMensaje(V,R_r2)
+          EnviarMensaje(V,R_r3)
+      sino
+        si(id=2)
+          EnviarMensaje(V,R_r1)
+          EnviarMensaje(V,R_r3)
+          si(PosCa<100)
+            EnviarMensaje(F,R_r1)
+            EnviarMensaje(F,R_r3)
+          sino
+            EnviarMensaje(V,R_r1)
+            EnviarMensaje(V,R_r3)
+        sino
+          si(id=3)
+            EnviarMensaje(V,R_r1)
+            EnviarMensaje(V,R_r2)
+            si(PosCa<100)
+              EnviarMensaje(F,R_r1)
+              EnviarMensaje(F,R_r2)
+            sino
+              EnviarMensaje(V,R_r1)
+              EnviarMensaje(V,R_r2)
+      si(id=1)
+        si (final1 = F)
+          RecibirMensaje(check1,R_r2)
+          RecibirMensaje(final1,R_r2)
+        si (final2 = F)
+          RecibirMensaje(check2,R_r3)
+          RecibirMensaje(final2,R_r3)
+      sino
+        si(id=2)
+          si (final1 = F)
+            RecibirMensaje(check1,R_r1)
+            RecibirMensaje(final1,R_r1)
+          si (final2 = F)
+            RecibirMensaje(check2,R_r3)
+            RecibirMensaje(final2,R_r3)
+        sino
+          si(id=3)           
+            si (final1 = F)
+              RecibirMensaje(check1,R_r1)
+              RecibirMensaje(final1,R_r1)
+            si (final2 = F)
+              RecibirMensaje(check2,R_r2)
+              RecibirMensaje(final2,R_r2)
   fin
-  robot papelero
-  variables
-    calle,avenida:numero
-    cOrigen,aOrigen:numero
+  robot coord
   comenzar
-    repetir 3
-      Random(calle,1,9)
-      Random(avenida,6,10)
-      BloquearEsquina(avenida,calle)
-      cOrigen := PosCa
-      aOrigen := PosAv
-      Pos(avenida,calle)
-      JuntarPapeles
-      Pos(aOrigen,cOrigen)
-      LiberarEsquina(avenida,calle)
-    BloquearEsquina(10,10)
-    Pos(10,10)
-    DepositarPapeles
-    Pos(aOrigen,cOrigen)
-    LiberarEsquina(10,10)
+    EnviarMensaje(1,R_r1)
+    EnviarMensaje(2,R_r2)
+    EnviarMensaje(3,R_r3)
   fin
 variables
-  RoboF1 : florero
-  RoboF2 : florero
-  RoboP1 : papelero
-  RoboP2 : papelero
+  R_r1,R_r2,R_r3: recolector
+  R_coord: coord
 comenzar
-  AsignarArea(RoboF1, areaFloreros)
-  AsignarArea(RoboF1, areaRflorero1)
-  AsignarArea(RoboF1, areaCompartida)
-  AsignarArea(RoboF2, areaFloreros)
-  AsignarArea(RoboF2, areaRflorero2)
-  AsignarArea(RoboF2, areaCompartida)
-  AsignarArea(RoboP1, areaPapeleros)
-  AsignarArea(RoboP1, areaRpapelero1)
-  AsignarArea(RoboP1, areaCompartida)
-  AsignarArea(RoboP2, areaPapeleros)
-  AsignarArea(RoboP2, areaRpapelero2)
-  AsignarArea(RoboP2, areaCompartida)
-  Iniciar(RoboF1, 6,10)
-  Iniciar(RoboF2, 7,10)
-  Iniciar(RoboP1, 8,10)
-  Iniciar(RoboP2, 9,10)
+  AsignarArea(R_r1,ciudad)
+  AsignarArea(R_r2,ciudad)
+  AsignarArea(R_r3,ciudad)
+  AsignarArea(R_coord,ciudad)
+  Iniciar(R_r1,1,1)
+  Iniciar(R_r2,2,1)
+  Iniciar(R_r3,3,1)
+  Iniciar(R_coord,5,1)
 fin
