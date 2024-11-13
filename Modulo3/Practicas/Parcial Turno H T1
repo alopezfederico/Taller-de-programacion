@@ -1,0 +1,103 @@
+programa LopezFedericoAntonio
+areas
+  AreaR1: AreaP(1,1,9,30)
+  AreaR2: AreaP(10,1,19,30)
+  AreaR3: AreaP(20,1,29,30)
+  AreaCoord: AreaP(100,100,100,100)
+  Deposito: AreaPC(50,50,50,50)
+robots
+  robot recolector
+  variables
+    id, Av, Ca: numero
+    distancia, pasos,flores: numero
+    ok:boolean
+  comenzar
+    RecibirMensaje(id,R_coord)
+    RecibirMensaje(distancia, R_coord)
+    repetir 3
+      repetir 4
+        pasos:=0
+        mientras(pasos<distancia)
+          mientras (HayFlorEnLaEsquina)
+            tomarFlor
+            BloquearEsquina(50,50)
+            Av:= PosAv
+            Ca:= PosCa
+            Pos(50,50)
+            depositarFlor
+            Pos(Av,Ca)
+            LiberarEsquina(50,50)
+            EnviarMensaje(id,R_coord)
+            RecibirMensaje(ok,R_coord)
+          mover
+          pasos:=pasos +1
+        derecha
+      Pos(PosAv, PosCa+distancia+1)
+    EnviarMensaje(4,R_coord)
+  fin
+  robot coordinador
+  variables
+    id, flores_r1,flores_r2,flores_r3:numero
+    terminados,largo:numero
+  comenzar
+    flores_r1:=0
+    flores_r2:=0
+    flores_r3:=0
+    terminados:=0
+    EnviarMensaje(1,R_r1)
+    EnviarMensaje(2,R_r2)
+    EnviarMensaje(3,R_r3)
+    Random(largo,1,6)
+    EnviarMensaje(largo,R_r1)
+    Random(largo,1,6)
+    EnviarMensaje(largo,R_r2)
+    Random(largo,1,6)
+    EnviarMensaje(largo,R_r3)
+    mientras ~(terminados = 3)
+      RecibirMensaje(id,*)
+      si~(id=4)
+        BloquearEsquina(50,50)
+        Pos(50,50)
+        tomarFlor
+        Pos(100,100)
+        LiberarEsquina(50,50)
+        si(id=1)
+          flores_r1:=flores_r1 +1
+          EnviarMensaje(V,R_r1)
+        sino
+          si(id=2)
+            flores_r2:=flores_r2+1
+            EnviarMensaje(V,R_r2)
+          sino
+            si(id=3)
+              flores_r3:= flores_r3+1
+              EnviarMensaje(V,R_r3)
+      sino
+        si(id=4)
+          terminados:=terminados+1
+    si(flores_r1>flores_r2)&(flores_r1>flores_r3)
+      Informar("Mayor recolector",1)
+    sino
+      si(flores_r2>flores_r3)&(flores_r2>flores_r1)
+        Informar("Mayor recolector",2)
+      sino
+        si(flores_r3>flores_r1)&(flores_r3>flores_r2)
+          Informar("Mayor recolector",3)
+  fin
+variables
+  R_r1,R_r2,R_r3: recolector
+  R_coord: coordinador
+comenzar
+  AsignarArea(R_r1, AreaR1)
+  AsignarArea(R_r2, AreaR2)
+  AsignarArea(R_r3, AreaR3)
+  AsignarArea(R_coord, AreaCoord)
+  AsignarArea(R_r1, Deposito)
+  AsignarArea(R_r2, Deposito)
+  AsignarArea(R_r3, Deposito)
+  AsignarArea(R_coord, Deposito)
+  Iniciar(R_r1,1,1)
+  Iniciar(R_r2,10,1)
+  Iniciar(R_r3,20,1)
+  Iniciar(R_coord,100,100)
+fin

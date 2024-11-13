@@ -1,0 +1,107 @@
+programa LopezFedericoAntonio
+procesos
+  proceso JuntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+areas
+  Cuadrante: AreaC(10,10,30,30)
+  AreaR1: AreaP(1,1,1,1)
+  AreaR2: AreaP(2,1,2,1)
+  AreaR3: AreaP(3,1,3,1)
+  AreaCoord: AreaP(9,9,9,9)
+robots 
+  robot recolector
+  variables
+    id:numero
+    total,intentos:numero
+    Av,Ca:numero
+    AvOrigen,CaOrigen:numero
+  comenzar
+    RecibirMensaje(id,R_coord)
+    Random(total,2,5)
+    intentos:=0
+    mientras~(intentos=total)
+      EnviarMensaje(id,R_coord)
+      EnviarMensaje(F,R_coord)
+      RecibirMensaje(Av,R_coord)
+      RecibirMensaje(Ca,R_coord)
+      AvOrigen:=PosAv
+      CaOrigen:=PosCa
+      BloquearEsquina(Av,Ca)
+      Pos(Av,Ca)
+      JuntarFlores
+      Pos(AvOrigen,CaOrigen)
+      LiberarEsquina(Av,Ca)
+      intentos:=intentos+1
+    EnviarMensaje(id,R_coord)
+    EnviarMensaje(V,R_coord)
+  fin  
+  robot coordinador
+  variables
+    id:numero
+    Av,Ca:numero
+    finalizados:numero
+    termine:boolean
+    intentos:numero
+  comenzar
+    EnviarMensaje(1,R_r1)
+    EnviarMensaje(2,R_r2)
+    EnviarMensaje(3,R_r3)
+    finalizados:=0
+    mientras~(finalizados=3)
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(termine,R_r1)
+        si(termine=F)
+          Random(Av,10,30)
+          Random(Ca,10,30)
+          EnviarMensaje(Av,R_r1)
+          EnviarMensaje(Ca,R_r1)
+          intentos:=intentos+1
+        sino
+          si(termine=V)
+            finalizados:=finalizados+1
+      sino
+        si(id=2)
+          RecibirMensaje(termine,R_r2)
+          si(termine=F)
+            Random(Av,10,30)
+            Random(Ca,10,30)
+            EnviarMensaje(Av,R_r2)
+            EnviarMensaje(Ca,R_r2)
+            intentos:=intentos+1
+          sino
+            si(termine=V)
+              finalizados:=finalizados+1
+        sino
+          si(id=3)
+            RecibirMensaje(termine,R_r3)
+            si(termine=F)
+              Random(Av,10,30)
+              Random(Ca,10,30)
+              EnviarMensaje(Av,R_r3)
+              EnviarMensaje(Ca,R_r3)
+              intentos:=intentos+1
+            sino
+              si(termine=V)
+                finalizados:=finalizados+1
+    Informar("Cantidad de intentos",intentos)
+  fin
+variables
+  R_r1,R_r2,R_r3: recolector
+  R_coord: coordinador
+comenzar
+  AsignarArea(R_r1, AreaR1)
+  AsignarArea(R_r2, AreaR2)
+  AsignarArea(R_r3, AreaR3)
+  AsignarArea(R_coord, AreaCoord)
+  AsignarArea(R_r1, Cuadrante)
+  AsignarArea(R_r2, Cuadrante)
+  AsignarArea(R_r3, Cuadrante)
+  Iniciar(R_r1, 1,1)
+  Iniciar(R_r2, 2,1)
+  Iniciar(R_r3, 3,1)
+  Iniciar(R_coord, 9,9)
+fin

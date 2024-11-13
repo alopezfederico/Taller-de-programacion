@@ -1,0 +1,109 @@
+programa Ejericio2
+procesos
+  proceso DejarFlores
+  comenzar
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+  proceso RealizarEtapa
+  variables
+    pasos:numero
+  comenzar
+    pasos:=0
+    mientras(PosAv<100)& (pasos<10)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+      mover
+      pasos:=pasos + 1
+  fin
+areas
+  Linea1: AreaP(1,1,100,1)
+  Linea2: AreaP(1,2,100,2)
+  Linea3: AreaP(1,3,100,3)
+  AreaF: AreaP(1,4,1,4)
+  PuntoEncuentro: AreaPC(50,50,50,50)
+robots
+  robot recolector
+  variables
+    id,AvOrigen,CaOrigen:numero
+    finalizado1,finalizado2:boolean
+  comenzar
+    derecha
+    RecibirMensaje(id,R_f)
+    mientras(PosAv<100)
+      RealizarEtapa
+      AvOrigen:=PosAv
+      CaOrigen:=PosCa
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      DejarFlores
+      Pos(AvOrigen,CaOrigen)
+      LiberarEsquina(50,50)
+      si(id=1)
+        EnviarMensaje(V,R_r2)
+        EnviarMensaje(V,R_r3)
+        RecibirMensaje(finalizado1,R_r2)
+        RecibirMensaje(finalizado2,R_r3)
+      sino
+        si(id=2)
+          EnviarMensaje(V,R_r1)
+          EnviarMensaje(V,R_r3)
+          RecibirMensaje(finalizado1,R_r1)
+          RecibirMensaje(finalizado2,R_r3)
+        sino
+          si(id=3)
+            EnviarMensaje(V,R_r1)
+            EnviarMensaje(V,R_r2)
+            RecibirMensaje(finalizado1,R_r1)
+            RecibirMensaje(finalizado2,R_r2)
+    si(id=1)
+      EnviarMensaje(V,R_f)
+    sino
+      si(id=2)
+        EnviarMensaje(V,R_f)
+      sino
+        si(id=3)
+          EnviarMensaje(V,R_f)
+  fin
+  robot fiscalizador
+  variables
+    id:numero
+    total:numero
+    finalizados:numero
+    check:boolean
+  comenzar
+    EnviarMensaje(1,R_r1)
+    EnviarMensaje(2,R_r2)
+    EnviarMensaje(3,R_r3)
+    finalizados:=0
+    total:=0
+    mientras ~(finalizados=3)
+      RecibirMensaje(check,*)
+      finalizados:=finalizados+1
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      total:= total+1
+    Pos(1,4)
+    LiberarEsquina(50,50)
+    Informar("Total de flores",total)
+  fin
+variables
+  R_r1,R_r2,R_r3:recolector
+  R_f: fiscalizador
+comenzar
+  AsignarArea(R_r1,Linea1)
+  AsignarArea(R_r2,Linea2)
+  AsignarArea(R_r3,Linea3)
+  AsignarArea(R_f,AreaF)
+  AsignarArea(R_r1,PuntoEncuentro)
+  AsignarArea(R_r2,PuntoEncuentro)
+  AsignarArea(R_r3,PuntoEncuentro)
+  AsignarArea(R_f,PuntoEncuentro)
+  Iniciar(R_r1, 1,1)
+  Iniciar(R_r2, 1,2)
+  Iniciar(R_r3, 1,3)
+  Iniciar(R_f, 1,4)
+fin
+      
