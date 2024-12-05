@@ -45,6 +45,7 @@ public class Persona {
         nombre = unNombre;
     }
     
+    @Override
     public String toString(){
         String aux; 
         aux = "Mi nombre es " + nombre + ", mi DNI es " + DNI + " y tengo " + edad + " años.";
